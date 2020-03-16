@@ -1,0 +1,131 @@
+﻿@page
+@model JRPC_HMS.UserEditModel
+@{
+    ViewData["Title"] = "User Edit";
+}
+
+@section Styles {
+    <!-- Select2 -->
+    <link rel="stylesheet" href="~/libs/select2/css/select2.min.css">
+}
+
+@section Scripts {
+    <!-- Select2 -->
+    <script src="~/libs/select2/js/select2.full.min.js"></script>
+
+    <!-- Page script -->
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2()
+        })
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Create User
+        <small>Please ensure your password is 6 characters in lenght, contains digits, nonalphanumeric, uppercase and 1 unique char.</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Admin</li>
+        <li><a href="/Admin/Users">Users</a></li>
+        <li class="active">Edit</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <form method="post" class="form-horizontal">
+        <div class="text-right">
+            <button type="submit" class="btn btn-success" title="Save">
+                <i class="far fa-save"></i> Save
+            </button>
+            <a asp-page="./Users" class="btn btn-danger" title="Cancel">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+        <br />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input type="hidden" value="Input.Id" />
+        <br />
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label asp-for="Input.ProfilePicture" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <img src="@Model.Input.ProfilePicture" class="img-circle" alt="User Image" style="height:50px; width:auto;">
+                            <input type="file" asp-for="UploadImage" class="form-control" />
+                            <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.FirstName" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.FirstName" class="form-control" />
+                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.LastName" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.LastName" class="form-control" />
+                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.UserName" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.UserName" class="form-control" />
+                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Phone" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.Phone" class="form-control" />
+                            <span asp-validation-for="Input.Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Password" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.Password" class="form-control" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.ConfirmPassword" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Input.ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Roles" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <select asp-items="@Model.AllRoles" asp-for="Input.Roles" class="form-control select2" multiple="multiple">
+                                <option value="">Select Roles</option>
+                            </select>
+                            <span asp-validation-for="Input.Roles" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </form>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
