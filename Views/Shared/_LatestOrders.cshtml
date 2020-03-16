@@ -1,0 +1,42 @@
+﻿@model List<JRPC_HMS.Models.Order>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Latest Orders</h3>
+    </div>
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Order Status</th>
+                        <th>Created On</th>
+                        <th>Total</th>
+                        <th>Payment Status</th>
+                        <th>Prep Status</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.OrderId</td>
+                            <td>@order.OrderStatus</td>
+                            <td>@order.OrderDate</td>
+                            <td>R @order.GrandTotal</td>
+                            <td>@order.PaymentStatus</td>
+                            <td>@order.PreparationStatus</td>
+                            <td><a class="tiny button hollow" asp-page="/Sales/OrderDetails" asp-route-id="@order.Id">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="box-footer clearfix">
+        <a asp-page="/POS" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
+        <a asp-page="/Sales/OrdersIndex" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+    </div>
+</div>

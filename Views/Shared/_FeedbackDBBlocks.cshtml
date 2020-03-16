@@ -1,0 +1,85 @@
+﻿@model List<JRPC_HMS.Models.FeedbackDBViewModel>
+
+
+<div class="box box-primary">
+    <div class="box-header">
+        <h4 class="box-title">Feedback Statistics</h4>
+        <div class="pull-right">
+            <div class="btn-group" role="group">
+                <ul class="list-inline">
+                    <li class="list-inline-item" style="background-color: #b3ffb3; border: 1px solid #006600; text-align: center; padding-left: 3px; padding-right: 3px;width:100px;">Excellent<br />100%</li>
+                    <li class="list-inline-item" style="background-color: #dbb3ff; border: 1px solid #5900A6; text-align: center; padding-left: 3px; padding-right: 3px;width:100px;">Good<br />80%</li>
+                    <li class="list-inline-item" style="background-color: #b3b3ff; border: 1px solid #0000FF; text-align: center; padding-left: 3px; padding-right: 3px;width:100px;">Neutral<br />60%</li>
+                    <li class="list-inline-item" style="background-color: #ffd7b3; border: 1px solid #FF7D00; text-align: center; padding-left: 3px; padding-right: 3px;width:100px;">Poor<br />40%</li>
+                    <li class="list-inline-item" style="background-color: #ffb3b3; border: 1px solid #FF0000; text-align: center; padding-left: 3px; padding-right: 3px;width:100px;">Very Poor<br />20%</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="box-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="list-group">
+                        @foreach (var form in Model)
+                        {
+                            var overall = form.Overall;
+                            <li class="list-group-item">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-sm-2 cell-border">
+                                            @form.FormName
+                                        </div>
+                                        <div class="col-sm-2 cell-border text-center">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-xs-12"><b># Feedbacks</b></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">@form.FormFeedbackCount</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="container-fluid">
+                                                <div class="row row-no-gutters">
+                                                    @foreach (var answer in form.QuestionsPerc)
+                                                    {
+                                                        var desc = answer.Key;
+                                                        var value = answer.Value;
+                                                        <div class="col-xs-2" style="@((value == 0) ? "border: 1px solid #3c8dbc;background-color: #FFFFFF;" : (value > 0 && value < 19) ? "border: 1px solid #3c8dbc;background-color:#ffb3b3;" : (value >= 20 && value < 39) ? "border: 1px solid #3c8dbc;background-color:#ffd7b3;" : (value >= 40 && value < 59) ? "border: 1px solid #3c8dbc;background-color:#b3b3ff;" : (value >= 60 && value < 79) ? "border: 1px solid #3c8dbc;background-color:#dbb3ff;" : (value >= 80) ? "border: 1px solid #3c8dbc;background-color:#b3ffb3;" : "border: 1px solid #3c8dbc;background-color: #FFFFFF;")">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="col-xs-12 text-center"><b>@desc</b></div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-xs-12 text-center">@value %</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1" style="@((overall == 0) ? "border: 1px solid #3c8dbc;background-color: #FFFFFF;" : (overall > 0 && overall < 19) ? "border: 1px solid #3c8dbc;background-color:#ffb3b3;" : (overall >= 20 && overall < 39) ? "border: 1px solid #3c8dbc;background-color:#ffd7b3;" : (overall >= 40 && overall < 59) ? "border: 1px solid #3c8dbc;background-color:#b3b3ff;" : (overall >= 60 && overall < 79) ? "border: 1px solid #3c8dbc;background-color:#dbb3ff;" : (overall >= 80) ? "border: 1px solid #3c8dbc;background-color:#b3ffb3;" : "border: 1px solid #3c8dbc;background-color: #FFFFFF;")">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <b>Overall</b>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">@overall %</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

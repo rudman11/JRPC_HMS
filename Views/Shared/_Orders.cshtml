@@ -1,0 +1,42 @@
+﻿@model List<JRPC_HMS.Models.OrderOrderItems>
+
+
+<form action="/Kitchen" method="post">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-2">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Order # @item.Order.OrderId</h3>
+                        <div class="pull-right">
+                            @item.Order.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var oi in item.OOrderItems)
+                                {
+                                    <tr>
+                                        <td>@oi.ProductName</td>
+                                        <td>@oi.Quantity</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box-footer">
+                        <button type="submit" asp-route-id="@item.Order.Id" class="btn btn-block btn-lg btn-primary">Complete</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</form>

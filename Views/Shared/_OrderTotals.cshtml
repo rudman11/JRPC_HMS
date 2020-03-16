@@ -1,0 +1,44 @@
+﻿@model JRPC_HMS.Models.OrderTotal
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Order Totals</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+                <thead>
+                    <tr>
+                        <th style="text-align:center;">Order Status</th>
+                        <th style="text-align:center;">Today</th>
+                        <th style="text-align:center;">This Week</th>
+                        <th style="text-align:center;">This Month</th>
+                        <th style="text-align:center;">This Year</th>
+                        <th style="text-align:center;">All Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center;">Pending</td>
+                        <td style="text-align:center;">R @Model.PendingToday</td>
+                        <td style="text-align:center;">R @Model.PendingWeek</td>
+                        <td style="text-align:center;">R @Model.PendingMonth</td>
+                        <td style="text-align:center;">R @Model.PendingYear</td>
+                        <td style="text-align:center;">R @Model.PendingAllTime</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;">Completed</td>
+                        <td style="text-align:center;">R @Model.CompletedToday</td>
+                        <td style="text-align:center;">R @Model.CompletedWeek</td>
+                        <td style="text-align:center;">R @Model.CompletedMonth</td>
+                        <td style="text-align:center;">R @Model.CompletedYear</td>
+                        <td style="text-align:center;">R @Model.CompletedAllTime</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- /.table-responsive -->
+    </div>
+</div>
+<!-- /.box -->

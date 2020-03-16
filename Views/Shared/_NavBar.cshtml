@@ -1,0 +1,178 @@
+﻿@inject JRPC_HMS.Services.Profile.ProfileManager ProfileManager
+
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">MAIN NAVIGATION</li>
+            @if (User.IsInRole("Admin") || User.IsInRole("User"))
+            {
+                <li class="@(Html.IsMenuActive("/Index") ? "active" : "")">
+                    <a href="~/Index">
+                        <i class="fas fa-tv"></i> <span>Dashboard</span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Admin") || User.IsInRole("User") || User.IsInRole("Terminal"))
+            {
+                <li class="@(Html.IsMenuActive("/POS") ? "active" : "")">
+                    <a href="~/POS">
+                        <i class="fas fa-cash-register"></i> <span>POS</span>
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Admin") || User.IsInRole("Kitchen"))
+            {
+                <li class="@(Html.IsMenuActive("/Kitchen") ? "active" : "")">
+                    <a href="~/Kitchen">
+                        <i class="fas fa-store"></i> <span>Kitchen View</span>
+                    </a>
+                </li>
+            }
+            <li class="treeview @(Html.IsMenuActive("/Menu") ? "active" : "")">
+                <a href="#">
+                    <i class="fab fa-buromobelexperte"></i> <span>Menu</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="@(Html.IsMenuActive("/Menu/MenuLayout") ? "active" : "")"><a href="~/Menu/MenuLayout"><i class="fa fa-circle-o"></i> Stock</a></li>
+                    <li class="@(Html.IsMenuActive("/Menu/TableLayout") ? "active" : "")"><a href="~/Menu/TableLayout"><i class="fa fa-circle-o"></i> Stock</a></li>
+                </ul>
+            </li>
+            @if (User.IsInRole("Admin") || User.IsInRole("User"))
+            {
+                <li class="treeview @(Html.IsMenuActive("/WarehousePages") ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-warehouse"></i> <span>Warehouse</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@(Html.IsMenuActive("/WarehousePages/StockIndex") ? "active" : "")"><a href="~/WarehousePages/StockIndex"><i class="fa fa-circle-o"></i> Stock</a></li>
+                        <li class="@(Html.IsMenuActive("/WarehousePages/SupplierIndex") ? "active" : "")"><a href="~/WarehousePages/SupplierIndex"><i class="fa fa-circle-o"></i> Suppliers</a></li>
+                        <li class="@(Html.IsMenuActive("/WarehousePages/RequisitionIndex") ? "active" : "")"><a href="~/WarehousePages/RequisitionIndex"><i class="fa fa-circle-o"></i> Requisitions</a></li>
+                    </ul>
+                </li>
+                <li class="treeview @(Html.IsMenuActive("/Catalog") ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-clipboard-list"></i> <span>Catalog</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@(Html.IsMenuActive("/Catalog/StockIndex") ? "active" : "")"><a href="~/Catalog/StockIndex"><i class="fa fa-circle-o"></i> Stock</a></li>
+                        <li class="@(Html.IsMenuActive("/Catalog/ProductIndex") ? "active" : "")"><a href="~/Catalog/ProductIndex"><i class="fa fa-circle-o"></i> Products</a></li>
+                        <li class="@(Html.IsMenuActive("/Catalog/CatIndex") ? "active" : "")"><a href="~/Catalog/CatIndex"><i class="fa fa-circle-o"></i> Categories</a></li>
+                    </ul>
+                </li>
+                <li class="treeview @(Html.IsMenuActive("/Sales") ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-shopping-cart"></i> <span>Sales</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@(Html.IsMenuActive("/Sales/OrdersIndex") ? "active" : "")"><a href="~/Sales/OrdersIndex"><i class="fa fa-circle-o"></i> Orders</a></li>
+                    </ul>
+                </li>
+                <li class="treeview @(Html.IsMenuActive("/Reports") ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reports</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@(Html.IsMenuActive("/Reports/SalesReport") ? "active" : "")"><a href="~/Reports/SalesReport"><i class="fa fa-circle-o"></i> Monthly Sales</a></li>
+                    </ul>
+                </li>
+                <li class="treeview @(Html.IsMenuActive("/QRServ") ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-qrcode"></i>
+                        <span>QRServ</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="treeview @(Html.IsMenuActive("/QRServ/Admin") ? "active" : "")">
+                            <a href="#">
+                                <i class="fas fa-user-lock"></i>
+                                <span>Admin</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="@(Html.IsMenuActive("/QRServ/Admin/FormIndex") ? "active" : "")"><a href="~/QRServ/Admin/FormIndex"><i class="far fa-file"></i> Forms</a></li>
+                                <li class="@(Html.IsMenuActive("/QRServ/Admin/QuestionsIndex") ? "active" : "")"><a href="~/QRServ/Admin/QuestionsIndex"><i class="fas fa-question"></i> Questions</a></li>
+                            </ul>
+                        </li>
+                        <li class="@(Html.IsMenuActive("/QRServ/FeedbackIndex") ? "active" : "")"><a href="~/QRServ/FeedbackIndex"><i class="far fa-comments"></i> Feedbacks</a></li>
+                        <li class="@(Html.IsMenuActive("/QRServ/FeedbackReport") ? "active" : "")"><a href="~/QRServ/FeedbackReport"><i class="fas fa-chart-line"></i> Report</a></li>
+                        <li class="@(Html.IsMenuActive("/QRServ/Customers") ? "active" : "")"><a href="~/QRServ/Customers"><i class="fas fa-users"></i> <span>Customers</span></a></li>
+                    </ul>
+                </li>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="treeview @(Html.IsMenuActive("/Admin") ? "active" : "")">
+                    <a href="#">
+                        <i class="fas fa-user-lock"></i>
+                        <span>Admin</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@(Html.IsMenuActive("/Users") ? "active" : "")"><a href="~/Admin/Users"><i class="fa fa-user"></i> Users</a></li>
+                        <li class="@(Html.IsMenuActive("/Roles") ? "active" : "")"><a href="~/Admin/Roles"><i class="fa fa-lock"></i> Roles</a></li>
+                    </ul>
+                </li>
+            }
+            <li class="@(Html.IsMenuActive("/LogPage") ? "active" : "")">
+                <a href="/LogPage">
+                    <i class="fas fa-exclamation-triangle"></i> <span>Error Logs</span>
+                </a>
+            </li>
+            <li class="@(Html.IsMenuActive("/NewFeaturesPage") ? "active" : "")">
+                <a href="/NewFeaturesPage">
+                    <i class="fab fa-readme"></i> <span>New Features</span>
+                </a>
+            </li>
+            @if (User.Identity.Name.Contains("udman82"))
+            {
+                <li class="@(Html.IsMenuActive("/Mail/Inbox") ? "active" : "")">
+                    <a href="/Mail/Inbox">
+                        <i class="fas fa-inbox"></i> <span>Mailbox</span>
+                    </a>
+                </li>
+            }
+            <li class="@(Html.IsMenuActive("/Documentation") ? "active" : "")">
+                <a href="/Documentation">
+                    <i class="fa fa-book"></i> <span>Documentation</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>

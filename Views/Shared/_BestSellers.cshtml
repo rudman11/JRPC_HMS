@@ -1,0 +1,37 @@
+﻿@model List<JRPC_HMS.Models.BestSeller>
+
+<div class="box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">Best Sellers</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Total Quantity</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var bs in Model)
+                    {
+                        <tr>
+                            <td>@bs.ProductName</td>
+                            <td>@bs.Quantity</td>
+                            <td>R @bs.Total</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer text-center">
+        <a asp-page="/Catalog/ProductIndex" class="btn btn-sm btn-default btn-flat pull-right">View All Products</a>
+    </div>
+    <!-- /.box-footer -->
+</div>
+<!-- /.box -->

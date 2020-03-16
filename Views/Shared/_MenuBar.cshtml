@@ -1,0 +1,120 @@
+﻿@inject JRPC_HMS.Services.Profile.ProfileManager ProfileManager
+@inject JRPC_HMS.Data.ApplicationDbContext _context
+@using Microsoft.EntityFrameworkCore;
+
+<!-- Header Navbar: style can be found in header.less -->
+<nav class="navbar navbar-static-top">
+    <!-- Sidebar toggle button-->
+    <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <i class="fas fa-bars"></i>
+    </a>
+    
+    <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+            <li style="padding-top:10px;">
+                <div id="loading"><img src="~/img/Hco0aDe.gif" width="51" height="29" /></div>
+            </li>
+            <!-- Tasks: style can be found in dropdown.less -->
+            <li class="dropdown tasks-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fab fa-readme"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="header">What's New</li>
+                    <li>
+                        <!-- inner menu: contains the actual data -->
+                        <ul class="menu">
+                            @foreach (var feature in _context.ChangeLog.ToList())
+                            {
+                                var valuenow = feature.PercentageCompleted;
+                                <li>
+                                    <a href="#">
+                                        <h3>
+                                            @feature.ChangeName
+                                            <small class="pull-right">@feature.PercentageCompleted%</small>
+                                        </h3>
+                                        <div class="progress xs">
+                                            <div class="progress-bar progress-bar-aqua" style="width: @feature.PercentageCompleted%" role="progressbar"
+                                                 aria-valuenow="@valuenow" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="sr-only">@feature.PercentageCompleted% Complete</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="footer">
+                        <a href="./NewFeaturesPage">View all new features</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Notifications: style can be found in dropdown.less -->
+            @if (User.IsInRole("Admin") || User.IsInRole("User"))
+            {
+                <li class="dropdown notifications-menu" id="notifications">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-warning" id="ordCount">@_context.Orders.AsNoTracking().Where(o => o.PreparationStatus == "Incomplete").Count()</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">You have @_context.Orders.AsNoTracking().Where(o => o.PreparationStatus == "Incomplete").Count() Incomplete Orders</li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <ul class="menu">
+                                @foreach (var order in _context.Orders.AsNoTracking().Where(o => o.PreparationStatus == "Incomplete"))
+                                {
+                                    <li>
+                                        <a asp-page="/Sales/OrderDetails" asp-route-id="@order.Id">
+                                            <div class="row">
+                                                <div class="col-xs-4">
+                                                    Order # @order.OrderId
+                                                </div>
+                                                <div class="col-xs-8">
+                                                    @order.OrderDate
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                        <li class="footer"><a asp-page="/Sales/OrdersIndex" asp-route-prepStatus="Incomplete" asp-route-currentpage="1" asp-route-pageSize="10">View all</a></li>
+                    </ul>
+                </li>
+            }
+            <!-- User Account: style can be found in dropdown.less -->
+            <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="@ProfileManager.CurrentUser.ProfilePicture" class="user-image" alt="User Image">
+                    <span class="hidden-xs">@ProfileManager.CurrentUser.FirstName&nbsp;@ProfileManager.CurrentUser.LastName</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                        <img src="@ProfileManager.CurrentUser.ProfilePicture" class="img-circle" alt="User Image">
+                        <p>
+                            @ProfileManager.CurrentUser.FirstName&nbsp;@ProfileManager.CurrentUser.LastName
+                        </p>
+                    </li>
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="/Settings/Profile" class="btn btn-default btn-flat">Profile</a>
+                            <a href="/Settings/Account" class="btn btn-default btn-flat">Password</a>
+                        </div>
+                        <div class="pull-right">
+                            <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                                <button type="submit" class="btn btn-default btn-flat">Sign out</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <!-- Control Sidebar Toggle Button -->
+            <li>
+                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            </li>
+        </ul>
+    </div>
+</nav>

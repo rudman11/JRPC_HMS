@@ -1,0 +1,37 @@
+﻿@model List<JRPC_HMS.Models.LowStockItem>
+
+<div class="box box-danger">
+    <div class="box-header with-border">
+        <h3 class="box-title">Low Stock In Stores</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <div class="table-responsive">
+            <table class="table no-margin">
+                <thead>
+                    <tr>
+                        <th>Store</th>
+                        <th>Stock Name</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td width="100">@item.StoreName</td>
+                            <td>@item.StockName</td>
+                            <td width="100"><span class="label label-danger">@item.InStock</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer text-center">
+        <a asp-page="/Catalog/StockIndex" class="btn btn-sm btn-default btn-flat pull-right">View All Stock</a>
+    </div>
+    <!-- /.box-footer -->
+</div>
+<!-- /.box -->
