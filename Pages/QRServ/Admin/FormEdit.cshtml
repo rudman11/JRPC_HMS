@@ -1,0 +1,62 @@
+﻿@page
+@model JRPC_HMS.Pages.QRServ.Admin.FormEditModel
+@{
+    ViewData["Title"] = "Form Edit";
+}
+
+<section class="content-header">
+    <h1>
+        Category Edit
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>QRServ</li>
+        <li><a href="/QRServ/Admin/FormIndex">Form</a></li>
+        <li class="active">Edit</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <form method="post" class="form-horizontal">
+        <div class="text-right">
+            <button type="submit" class="btn btn-success" title="Save">
+                <i class="far fa-save"></i>
+            </button>
+            <a asp-page="./FormIndex" class="btn btn-danger" title="Cancel">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        <br />
+        <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Form.Form_ID" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Form.FormName" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Form.FormName" class="form-control" />
+                            <span asp-validation-for="Form.FormName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Form.Status" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <select asp-for="Form.Status" asp-items="Model.Status" class="form-control"></select>
+                            <span asp-validation-for="Form.Status" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </form>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

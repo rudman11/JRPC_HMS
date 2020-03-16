@@ -1,0 +1,406 @@
+﻿@page
+@model JRPC_HMS.Pages.QRServ.FeedbackIndexModel
+@{
+    ViewData["Title"] = "FeedbackIndex";
+}
+
+<style>
+
+    table.table th a {
+        text-decoration: none;
+        color: #FFFFFF;
+    }
+
+        table.table th a:hover {
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+    .pagesizeddl {
+        border: 0;
+        font-weight: 900;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Feedbacks
+        <small>@Model.Count Feedbacks</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>QRServ</li>
+        <li class="active">Feedbacks</li>
+    </ol>
+</section>
+<section class="content">
+    <form asp-page="./FeedbackIndex" method="post" name="pageSizeForm">
+        <div class="box box-solid box-primary collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Filter</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" title="Collapse">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label asp-for="StartDateSearch">Start Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="startdatepicker" asp-for="StartDateSearch">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label asp-for="EndDateSearch">End Date</label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" class="form-control" id="enddatepicker" asp-for="EndDateSearch">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label asp-for="CustomerSearch">Customer</label>
+                                    <select asp-for="CustomerSearch" asp-items="@Model.CustomerList" class="form-control"><option value="">Select Customer</option></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label asp-for="FormSearch">Form</label>
+                                    <select asp-for="FormSearch" asp-items="@Model.FormList" class="form-control"><option value="">Select Form</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label asp-for="ServantSearch">Waitron</label>
+                                    <select asp-for="ServantSearch" asp-items="@Model.ServantList" class="form-control"><option value="">Select Waitron</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label asp-for="StatusSearch">Username</label>
+                                    <select asp-for="StatusSearch" asp-items="@Model.StatusList" class="form-control"><option value="">Select Status</option></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label asp-for="ContactCustomerSearch">Contact Customer</label>
+                                    <select asp-for="ContactCustomerSearch" asp-items="@Model.ContactCustomerList" class="form-control"><option value="">Select</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <button type="submit"
+                                    asp-route-currentpage="@Model.CurrentPage" asp-route-pageSize="@Model.PageSize" class="btn btn-primary">
+                                <i class="fas fa-search"></i> <span>Search</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box box-primary">
+            <div class="box-body no-padding">
+                <div class="mailbox-controls">
+                    <div class="mailbox-controls">
+                        <button type="submit" class="btn btn-primary btn-sm" id="btnExport" title="Export"
+                                asp-page-handler="Export"
+                                asp-route-startDate="@Model.StartDateSearch"
+                                asp-route-endDate="@Model.EndDateSearch"
+                                asp-route-customer="@Model.CustomerSearch"
+                                asp-route-form="@Model.FormSearch"
+                                asp-route-servant="@Model.ServantSearch"
+                                asp-route-status="@Model.StatusSearch"
+                                asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                                asp-route-pageSize="@Model.PageSize"
+                                asp-route-currentpage="@Model.CurrentPage">
+                            <i class="far fa-file-excel"></i>
+                        </button>
+                        <a asp-page="/Sales/OrdersIndex" class="btn btn-success btn-sm"><i class="fas fa-sync-alt"></i></a>
+                        <div class="pull-right">
+                            <label asp-for="PageSize">Displaying</label>
+                            <select asp-for="PageSize" asp-items="Model.PageSizeList" class="pagesizeddl" onchange="DoPostBack();"></select>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="btn-group">
+                                <a asp-route-startDate="@Model.StartDateSearch"
+                                   asp-route-endDate="@Model.EndDateSearch"
+                                   asp-route-customer="@Model.CustomerSearch"
+                                   asp-route-form="@Model.FormSearch"
+                                   asp-route-servant="@Model.ServantSearch"
+                                   asp-route-status="@Model.StatusSearch"
+                                   asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentPage="1"
+                                   aria-label="First" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                                <a asp-route-startDate="@Model.StartDateSearch"
+                                   asp-route-endDate="@Model.EndDateSearch"
+                                   asp-route-customer="@Model.CustomerSearch"
+                                   asp-route-form="@Model.FormSearch"
+                                   asp-route-servant="@Model.ServantSearch"
+                                   asp-route-status="@Model.StatusSearch"
+                                   asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentPage="@(Model.CurrentPage -1)"
+                                   aria-label="Previous" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                                @for (var i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <a asp-route-startDate="@Model.StartDateSearch"
+                                       asp-route-endDate="@Model.EndDateSearch"
+                                       asp-route-customer="@Model.CustomerSearch"
+                                       asp-route-form="@Model.FormSearch"
+                                       asp-route-servant="@Model.ServantSearch"
+                                       asp-route-status="@Model.StatusSearch"
+                                       asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                                       asp-route-pageSize="@Model.PageSize"
+                                       asp-route-currentPage="@(i)"
+                                       class="btn btn-default btn-sm @(i == Model.CurrentPage ? "active" : "")">@i</a>
+                                }
+                                <a asp-route-startDate="@Model.StartDateSearch"
+                                   asp-route-endDate="@Model.EndDateSearch"
+                                   asp-route-customer="@Model.CustomerSearch"
+                                   asp-route-form="@Model.FormSearch"
+                                   asp-route-servant="@Model.ServantSearch"
+                                   asp-route-status="@Model.StatusSearch"
+                                   asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentpage="@(Model.CurrentPage + 1)"
+                                   aria-label="Next" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                                <a asp-route-startDate="@Model.StartDateSearch"
+                                   asp-route-endDate="@Model.EndDateSearch"
+                                   asp-route-customer="@Model.CustomerSearch"
+                                   asp-route-form="@Model.FormSearch"
+                                   asp-route-servant="@Model.ServantSearch"
+                                   asp-route-status="@Model.StatusSearch"
+                                   asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentpage="@Model.TotalPages"
+                                   aria-label="Last" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive mailbox-messages">
+                    <div class="container-fluid">
+                        <div class="row">
+                            @foreach (var item in Model.Feedbacks)
+                            {
+                                <div class="col-xs-2_2">
+                                    <div class="box box-solid @((item.Status == "NEGATIVE") ? "box-danger" : "box-success")">
+                                        <div class="box-header">
+                                            <h4 class="box-title">@Html.DisplayFor(modelItem => item.RefNo)</h4>
+                                            <div class="box-tools pull-right">
+                                                <h6>@Html.DisplayFor(modelItem => item.Status) - @item.RefScore %</h6>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <table class="table">
+                                                <tr>
+                                                    <th>Photo</th>
+                                                    <td><img src="@item.Photo" style="height:50px;width:auto;" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <td>@Html.DisplayFor(modelItem => Model.Customers.FirstOrDefault(c => c.Id == item.Customer_ID && c.ForFeedback == "Yes").Name)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Email</th>
+                                                    <td>@Html.DisplayFor(modelItem => Model.Customers.FirstOrDefault(c => c.Id == item.Customer_ID && c.ForFeedback == "Yes").Email)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Phone</th>
+                                                    <td>@Html.DisplayFor(modelItem => Model.Customers.FirstOrDefault(c => c.Id == item.Customer_ID && c.ForFeedback == "Yes").Phone)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Waitron</th>
+                                                    <td>@Html.DisplayFor(modelItem => item.Servant)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Comments</th>
+                                                    <td>@Html.DisplayFor(modelItem => item.Comments)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Form Name</th>
+                                                    <td>@Model.AllForms.FirstOrDefault(f => f.Form_ID == item.Form_ID).FormName</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Submitted Date</th>
+                                                    <td>@Html.DisplayFor(modelItem => item.SubmittedDate)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Notes</th>
+                                                    <td>@Html.DisplayFor(modelItem => item.Notes)</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Head Office Notes</th>
+                                                    <td>@Html.DisplayFor(modelItem => item.HONotes)</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="box-footer">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <a class="btn btn-primary" role="button" data-toggle="collapse" href="#@(item.RefNo)qa" aria-expanded="false" aria-controls="questionsanswers"><i class="far fa-eye"></i></a>
+                                                        <div class="collapse" id="@(item.RefNo)qa">
+                                                            <div class="well">
+                                                                <div class="container-fluid">
+                                                                    <table class="table">
+                                                                        @foreach (var question in Model.Questions.Where(q => q.Form_ID == item.Form_ID))
+                                                                        {
+                                                                            <tr>
+                                                                                <th width="80%">@Html.DisplayFor(modelItem => question.QuestionName)</th>
+                                                                                <td width="20%" align="right">@Html.DisplayFor(modelItem => Model.Answers.FirstOrDefault(a => a.Question_ID == question.Question_ID && a.Feedback_ID == item.RefNo).QAnswer)</td>
+                                                                            </tr>
+                                                                        }
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 pull-right">
+                                                        <a asp-page="./FeedbackEdit" asp-route-refno="@item.RefNo" class="btn btn-primary pull-right"><i class="far fa-edit"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer no-padding">
+                <div class="mailbox-controls">
+                    <button type="submit" class="btn btn-primary btn-sm" id="btnExport" title="Export"
+                            asp-page-handler="Export"
+                            asp-route-startDate="@Model.StartDateSearch"
+                            asp-route-endDate="@Model.EndDateSearch"
+                            asp-route-customer="@Model.CustomerSearch"
+                            asp-route-form="@Model.FormSearch"
+                            asp-route-servant="@Model.ServantSearch"
+                            asp-route-status="@Model.StatusSearch"
+                            asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                            asp-route-pageSize="@Model.PageSize"
+                            asp-route-currentpage="@Model.CurrentPage">
+                        <i class="far fa-file-excel"></i>
+                    </button>
+                    <a asp-page="/Sales/OrdersIndex" class="btn btn-success btn-sm"><i class="fas fa-sync-alt"></i></a>
+                    <div class="pull-right">
+                        <label asp-for="PageSize">Displaying</label>
+                        <select asp-for="PageSize" asp-items="Model.PageSizeList" class="pagesizeddl" onchange="DoPostBack();"></select>
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="btn-group">
+                            <a asp-route-startDate="@Model.StartDateSearch"
+                               asp-route-endDate="@Model.EndDateSearch"
+                               asp-route-customer="@Model.CustomerSearch"
+                               asp-route-form="@Model.FormSearch"
+                               asp-route-servant="@Model.ServantSearch"
+                               asp-route-status="@Model.StatusSearch"
+                               asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                               asp-route-pageSize="@Model.PageSize"
+                               asp-route-currentPage="1"
+                               aria-label="First" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                            <a asp-route-startDate="@Model.StartDateSearch"
+                               asp-route-endDate="@Model.EndDateSearch"
+                               asp-route-customer="@Model.CustomerSearch"
+                               asp-route-form="@Model.FormSearch"
+                               asp-route-servant="@Model.ServantSearch"
+                               asp-route-status="@Model.StatusSearch"
+                               asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                               asp-route-pageSize="@Model.PageSize"
+                               asp-route-currentPage="@(Model.CurrentPage -1)"
+                               aria-label="Previous" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                            @for (var i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <a asp-route-startDate="@Model.StartDateSearch"
+                                   asp-route-endDate="@Model.EndDateSearch"
+                                   asp-route-customer="@Model.CustomerSearch"
+                                   asp-route-form="@Model.FormSearch"
+                                   asp-route-servant="@Model.ServantSearch"
+                                   asp-route-status="@Model.StatusSearch"
+                                   asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentPage="@(i)"
+                                   class="btn btn-default btn-sm @(i == Model.CurrentPage ? "active" : "")">@i</a>
+                            }
+                            <a asp-route-startDate="@Model.StartDateSearch"
+                               asp-route-endDate="@Model.EndDateSearch"
+                               asp-route-customer="@Model.CustomerSearch"
+                               asp-route-form="@Model.FormSearch"
+                               asp-route-servant="@Model.ServantSearch"
+                               asp-route-status="@Model.StatusSearch"
+                               asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                               asp-route-pageSize="@Model.PageSize"
+                               asp-route-currentpage="@(Model.CurrentPage + 1)"
+                               aria-label="Next" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                            <a asp-route-startDate="@Model.StartDateSearch"
+                               asp-route-endDate="@Model.EndDateSearch"
+                               asp-route-customer="@Model.CustomerSearch"
+                               asp-route-form="@Model.FormSearch"
+                               asp-route-servant="@Model.ServantSearch"
+                               asp-route-status="@Model.StatusSearch"
+                               asp-route-contactCustomer="@Model.ContactCustomerSearch"
+                               asp-route-pageSize="@Model.PageSize"
+                               asp-route-currentpage="@Model.TotalPages"
+                               aria-label="Last" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+<script>
+    function DoPostBack() {
+        document.pageSizeForm.action = "/QRServ/FeedbackIndex";
+        document.pageSizeForm.submit();
+    } 
+</script>

@@ -1,0 +1,112 @@
+﻿@page
+@model JRPC_HMS.Pages.QRServ.FeedbackEditModel
+@{
+    ViewData["Title"] = "Feedback Edit";
+}
+
+<section class="content-header">
+    <h1>
+        Feedback Edit
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>QRServ</li>
+        <li><a href="/QRServ/FeedbackIndex">Feedbacks</a></li>
+        <li class="active">Edit</li>
+    </ol>
+</section>
+
+<section class="content">
+    <form method="post">
+        <div class="text-right">
+            <button type="submit" class="btn btn-success" title="Save">
+                <i class="far fa-save"></i>
+            </button>
+            <a asp-page="./FeedbackIndex" class="btn btn-danger" title="Cancel">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        <br />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Feedback.RefNo" />
+        <div class="box box-solid @(Model.Feedback.Status == "NEGATIVE" ? "box-danger" : "box-primary")">
+            <div class="box-header">
+                <h4 class="box-title">@Model.Feedback.RefNo</h4>
+                <div class="pull-right">
+                    <h6>@Model.Feedback.Status - @Model.Feedback.RefScore %</h6>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tr>
+                                    <th>Name</th>
+                                    <td>@Model.Customer.Name</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>@Model.Customer.Email</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone</th>
+                                    <td>@Model.Customer.Phone</td>
+                                </tr>
+                                <tr>
+                                    <th>Waitron</th>
+                                    <td>@Model.Feedback.Servant</td>
+                                </tr>
+                                <tr>
+                                    <th>Comments</th>
+                                    <td>@Model.Feedback.Comments</td>
+                                </tr>
+                                <tr>
+                                    <th>Form Name</th>
+                                    <td>@Model.Forms.FirstOrDefault(f => f.Form_ID == Model.Feedback.Form_ID).FormName</td>
+                                </tr>
+                                <tr>
+                                    <th>Submitted Date</th>
+                                    <td>@Model.Feedback.SubmittedDate</td>
+                                </tr>
+                                <tr>
+                                    <th>Photo</th>
+                                    <td><img src="@Model.Feedback.Photo" style="height:150px; width:auto;" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tr>
+                                    <th>Status</th>
+                                    <td>
+                                        <select asp-for="FeedbackStatus" class="form-control">
+                                            <option value="NEGATIVE">NEGATIVE</option>
+                                            <option value="POSITIVE">POSITIVE</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Notes</th>
+                                    <td>
+                                        <textarea style="width:98%;resize:none;" rows="5" class="form-control" asp-for="Notes"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Head Office Notes</th>
+                                    <td>
+                                        <textarea style="width:98%;resize:none;" rows="5" class="form-control" asp-for="HO_Notes"></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
