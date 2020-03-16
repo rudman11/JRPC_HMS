@@ -1,0 +1,64 @@
+﻿@page
+@model JRPC_HMS.Pages.Catalog.StockDetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="content-header">
+    <h1>
+        Stock Details
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Catalog</li>
+        <li><a href="/Catalog/StockIndex">Stock</a></li>
+        <li class="active">Category Details</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="text-right">
+        <a asp-page="./StockIndex" class="btn btn-primary" title="Back">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <a asp-page="./StockEdit" asp-route-id="@Model.StockItem.Id" class="btn btn-success" title="Edit">
+            <i class="far fa-edit"></i>
+        </a>
+    </div>
+    <br />
+    <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <table class="table">
+                    <tr>
+                        <th>Stock Name</th>
+                        <td>@Model.StockItem.StockName</td>
+                    </tr>
+                    <tr>
+                        <th>Unit</th>
+                        <td>@Model.StockItem.Unit</td>
+                    </tr>
+
+                    <tr>
+                        <th>Price</th>
+                        <td>R @Model.StockItem.Price</td>
+                    </tr>
+                    <tr>
+                        <th>In Stock</th>
+                        <td>@Model.StockItem.InStock</td>
+                    </tr>
+                    <tr>
+                        <th>Store</th>
+                        <td>@Model.Store.StoreName</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

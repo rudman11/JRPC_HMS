@@ -1,0 +1,59 @@
+﻿@page
+@model JRPC_HMS.Pages.Catalog.CatDetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="content-header">
+    <h1>
+        Category Details
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Catalog</li>
+        <li><a href="/Catalog/CatIndex">Category</a></li>
+        <li class="active">Category Details</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="text-right">
+        <a asp-page="./CatIndex" class="btn btn-primary" title="Back">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <a asp-page="./CatEdit" asp-route-id="@Model.Category.Cat_ID" class="btn btn-success" title="Edit">
+            <i class="far fa-edit"></i>
+        </a>
+    </div>
+    <br />
+    <!-- Default box -->
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="container-fluid">
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <b>Category Name</b>
+                    </div>
+                    <div class="col-sm-10">
+                        @Model.Category.CategoryName
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <b>Category Description</b>
+                    </div>
+                    <div class="col-sm-10">
+                        @Model.Category.CategoryDescription
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

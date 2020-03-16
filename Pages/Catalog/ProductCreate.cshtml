@@ -1,0 +1,120 @@
+﻿@page
+@model JRPC_HMS.Pages.Catalog.ProductCreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Create Product
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Catalog</li>
+        <li><a href="/Catalog/ProductIndex">Products</a></li>
+        <li class="active">Create</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <form method="post" class="form-horizontal" enctype="multipart/form-data">
+        <div class="text-right">
+            <button type="submit" class="btn btn-success" title="Save">
+                <i class="far fa-save"></i>
+            </button>
+            <a asp-page="./ProductIndex" class="btn btn-danger" title="Cancel">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        <br />
+        <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label asp-for="Product.ProductName" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Product.ProductName" class="form-control" />
+                            <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Product.ProductShortDescription" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Product.ProductShortDescription" class="form-control" />
+                            <span asp-validation-for="Product.ProductShortDescription" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Product.ProductDetailedDescription" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Product.ProductDetailedDescription" class="form-control" />
+                            <span asp-validation-for="Product.ProductDetailedDescription" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Product.SellingPrice" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">R</div>
+                                <input asp-for="Product.SellingPrice" class="form-control" />
+                                <span asp-validation-for="Product.SellingPrice" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Product.ImageUrl" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input type="file" asp-for="UploadImage" class="form-control" />
+                            <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Product.Cat_ID" class="form-label col-sm-2">Category</label>
+                        <div class="col-sm-10">
+                            <select asp-items="Model.Categories" id="SelectedTag" name="SelectedTag" class="form-control">
+                                <option value="">Select Category</option>
+                            </select>
+                            <span asp-validation-for="Product.Cat_ID" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label col-sm-2">Stock for Product</label>
+                        <div class="col-sm-10">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Stock</th>
+                                        <th>Quantity Use</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var stock in Model.StockItems)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="checkbox checkbox-primary">
+                                                    <input type="checkbox" name="StockItemChecked" value="@stock.StockName" />
+                                                    <label>@stock.StockName</label>
+                                                </div>
+                                            </td>
+                                            <td><input name="SelectedStockQuantities" /></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </form>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

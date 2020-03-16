@@ -1,0 +1,90 @@
+﻿@page
+@model JRPC_HMS.Pages.Catalog.StockEditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Edit Stock
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Catalog</li>
+        <li><a href="/Catalog/StockIndex">Stock</a></li>
+        <li class="active">Edit</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <form method="post" class="form-horizontal">
+        <div class="text-right">
+            <button type="submit" class="btn btn-success" title="Save">
+                <i class="far fa-save"></i>
+            </button>
+            <a asp-page="./StockIndex" class="btn btn-danger" title="Cancel">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        <br />
+        <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="StockItem.Id" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StockItem.StockName" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="StockItem.StockName" class="form-control" />
+                            <span asp-validation-for="StockItem.StockName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StockItem.Unit" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="StockItem.Unit" class="form-control" />
+                            <span asp-validation-for="StockItem.Unit" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StockItem.Price" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-addon">R</div>
+                                <input asp-for="StockItem.Price" class="form-control is-valid" />
+                                <span asp-validation-for="StockItem.Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StockItem.InStock" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="StockItem.InStock" class="form-control" />
+                            <span asp-validation-for="StockItem.InStock" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StockItem.StoreId" class="form-label col-sm-2">Store</label>
+                        <div class="col-sm-10">
+                            <select asp-for="StoreId" asp-items="Model.Stores" class="form-control">
+                                <option>Select Store</option>
+                            </select>
+                            <span asp-validation-for="StockItem.StoreId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </form>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
