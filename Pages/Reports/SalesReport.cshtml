@@ -1,0 +1,439 @@
+﻿@page
+@model JRPC_HMS.Pages.Reports.SalesReportModel
+@{
+    ViewData["Title"] = "Monthly Sales Report";
+}
+
+<style>
+    table.table th a {
+        text-decoration: none;
+        color: #FFFFFF;
+    }
+
+        table.table th a:hover {
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+    .pagesizeddl {
+        border: 0;
+        font-weight: 900;
+    }
+
+    #exTab3 .nav-pills > li > a {
+        border-radius: 4px;
+    }
+
+    #exTab3 .tab-content {
+        background-color: #ECF0F5;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="~/js/pages/salesreport.js"></script>
+    <script type="text/javascript">
+        var storeCats = @Html.Raw(Model.StoreCats);
+        var storeData = @Html.Raw(Model.StoreData);
+        storeChart(storeCats, storeData);
+
+        var userCats = @Html.Raw(Model.UserCats);
+        var userData = @Html.Raw(Model.UserData);
+        userChart(userCats, userData);
+
+        var categoryCats = @Html.Raw(Model.CategoryCats);
+        var categoryData = @Html.Raw(Model.CategoryData);
+        categoryChart(categoryCats, categoryData);
+
+        var salesCats = @Html.Raw(Model.SalesCats);
+        var salesData = @Html.Raw(Model.SalesData);
+        salesChart(salesCats, salesData);
+
+        var profitCats = @Html.Raw(Model.ProfitCats);
+        var profitData = @Html.Raw(Model.ProfitData);
+        profitChart(profitCats, profitData);
+
+        var ordersCats = @Html.Raw(Model.OrdersCats);
+        var ordersData = @Html.Raw(Model.OrdersData);
+        ordersChart(ordersCats, ordersData);
+
+        var orderStatusCats = @Html.Raw(Model.OrderStatusCats);
+        var orderStatusData = @Html.Raw(Model.OrderStatusData);
+        orderStatusChart(orderStatusCats, orderStatusData);
+
+        $("#btnPrint").click(function () {
+            var contents = $("#printContents").html();
+            var frame1 = $('<iframe />');
+            frame1[0].name = "frame1";
+            frame1.css({ "position": "absolute", "top": "-1000000px" });
+            $("body").append(frame1);
+            var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+            frameDoc.document.open();
+            frameDoc.document.write('<html><head><title>Forms</title>');
+            frameDoc.document.write('<link rel="stylesheet" href="~/libs/bootstrap/css/bootstrap.min.css">');
+            frameDoc.document.write('<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">');
+            frameDoc.document.write('<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">');
+            frameDoc.document.write('<link rel="stylesheet" href="~/css/build.css" />');
+            frameDoc.document.write('<link rel="stylesheet" href="~/libs/admin-lte/css/AdminLTE.css">');
+            frameDoc.document.write('<link rel="stylesheet" href="~/libs/admin-lte/css/skins/_all-skins.min.css">');
+            frameDoc.document.write('</head><body>');
+            frameDoc.document.write('<section class="content-header"><h1>Monthly Sales Report<small>@Model.MonthSelected @Model.YearSelected</small><h1></section>');
+            frameDoc.document.write(contents);
+            frameDoc.document.write('<script src="~/libs/jquery/jquery.min.js" />');
+            frameDoc.document.write('<script src="~/libs/bootstrap/js/bootstrap.min.js" />');
+            frameDoc.document.write('<script src="~/libs/jquery-slimscroll/jquery.slimscroll.min.js" />');
+            frameDoc.document.write('<script src="~/libs/fastclick/fastclick.min.js" />');
+            frameDoc.document.write('<script src="https://code.highcharts.com/highcharts.js" />');
+            frameDoc.document.write('<script src="~/js/pages/salesreport.js" />');
+            frameDoc.document.write('\x3Cscript type="text/javascript">');
+            frameDoc.document.write('var storeCats = @Html.Raw(Model.StoreCats);var storeData = @Html.Raw(Model.StoreData);storeChart(storeCats, storeData);');
+            frameDoc.document.write('var storeCats = @Html.Raw(Model.UserCats);var storeData = @Html.Raw(Model.UserData);userChart(userCats, userData);');
+            frameDoc.document.write('var storeCats = @Html.Raw(Model.CategoryCats);var storeData = @Html.Raw(Model.CategoryData);categoryChart(categoryCats, categoryData);');
+            frameDoc.document.write('var storeCats = @Html.Raw(Model.SalesCats);var storeData = @Html.Raw(Model.SalesData);salesChart(salesCats, salesData);');
+            frameDoc.document.write('var storeCats = @Html.Raw(Model.ProfitCats);var storeData = @Html.Raw(Model.ProfitData);profitChart(profitCats, profitData);');
+            frameDoc.document.write('var storeCats = @Html.Raw(Model.OrdersCats);var storeData = @Html.Raw(Model.OrdersData);ordersChart(ordersCats, ordersData);');
+            frameDoc.document.write('var storeCats = @Html.Raw(Model.OrderStatusCats);var storeData = @Html.Raw(Model.OrderStatusData);orderStatusChart(orderStatusCats, orderStatusData);');
+            frameDoc.document.write('\x3C/script>');
+            frameDoc.document.write('</body></html>');
+            frameDoc.document.close();
+            setTimeout(function () {
+                window.frames["frame1"].focus();
+                window.frames["frame1"].print();
+                frame1.remove();
+            }, 500);
+        });
+    </script>
+}
+
+<section class="content-header">
+    <h1>
+        Monthly Sales Report
+        <small>@Model.MonthSelected @Model.YearSelected</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Reports</li>
+        <li class="active">Monthly Sales</li>
+    </ol>
+</section>
+
+<section class="content">
+    <form method="post" name="pageSizeForm">
+        <div class="text-right">
+            <a href="#" id="btnPrint" class="btn btn-primary" title="Print">
+                <i class="fas fa-print"></i>
+            </a>
+            <button type="submit" asp-page-handler="Export" asp-route-pageSize="@Model.PageSize" asp-route-currentpage="@Model.TotalPages" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear" class="btn btn-primary" title="Export">
+                <i class="far fa-file-excel"></i>
+            </button>
+        </div>
+        <br />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-solid">
+                        <div class="box-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <label for="SelectedYear" style="font-size: 20px;"><i class="fas fa-calendar-alt"></i></label>&nbsp;
+                                                <label for="SelectedYear" style="font-size: 20px;"><b>Select Month for </b></label>
+                                            </div>
+                                            <div class="form-group">
+                                                <select asp-items="Model.Years" id="SelectedYear" name="SelectedYear" class="form-control" style="width: 120px; font-weight:700;">
+                                                    <option value="">Select Year</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">&nbsp;</div>
+                                <div class="row">
+                                    <div class="hidden-sm hidden-md hidden-lg">
+                                        <div class="col-xs-12">
+                                            <select asp-items="Model.MonthNames" id="SelectedMonth" name="SelectedMonth" class="form-control" onchange="DoPostBack();">
+                                                <option value="">Select Month</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="hidden-xs">
+                                        @foreach (var monthName in Model.MonthNames)
+                                        {
+                                            string mName = monthName.Text.Substring(0, 3);
+                                            string month = monthName.Text;
+                                            <div class="col-sm-2 col-lg-1">
+                                                <button type="submit" class="btn btn-block btn-default" asp-route-month="@month">@mName</button>
+                                            </div>
+
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="printContents" style="display: @Model.ShowHide">
+                <div class="row">
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>@Model.TotProdSold</h3>
+                                <p>Total Products Sold</p>
+                                <p>@Model.TotProdSoldPerc</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>@Model.TotOrders</h3>
+                                <p>Total Orders</p>
+                                <p>@Model.TotOrdersPerc</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3>@Model.TotOrdersVoided</h3>
+                                <p>Total Voided Orders</p>
+                                <p>@Model.TotOrdersVoidedPerc</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                        <div class="small-box bg-blue">
+                            <div class="inner">
+                                <h3>R @Model.TotSales</h3>
+                                <p>Total Sales</p>
+                                <p>@Model.TotSalesPerc</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                        <div class="small-box bg-orange">
+                            <div class="inner">
+                                <h3>R @Model.TotCost</h3>
+                                <p>Total Cost</p>
+                                <p>@Model.TotCostPerc</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-xs-12">
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3>R @Model.TotProfit</h3>
+                                <p>Total Profit</p>
+                                <p>@Model.TotProfitPerc</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-hand-holding-usd"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="box box-solid">
+                            <div class="box-body no-padding">
+                                <!-- Pie Chart -->
+                                <div id="storeChart" width="800" height="450" style="margin: 0 auto; background: url(../../wwwroot/img/spinner.gif)"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-solid">
+                            <div class="box-body no-padding">
+                                <!-- Pie Chart -->
+                                <div id="userChart" width="800" height="450"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-solid">
+                            <div class="box-body no-padding">
+                                <!-- Column Chart -->
+                                <div id="categoryChart" width="800" height="450"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-solid">
+                            <div class="box-body no-padding">
+                                <!-- Area Chart -->
+                                <div id="salesChart" width="800" height="250"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="box box-solid">
+                            <div class="box-body no-padding">
+                                <!-- Bar Chart -->
+                                <div id="profitChart" width="800" height="450"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-solid">
+                            <div class="box-body no-padding">
+                                <!-- line Chart -->
+                                <div id="ordersChart" width="800" height="450"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="box box-solid">
+                            <div class="box-body no-padding">
+                                <!-- Pie Chart -->
+                                <div id="orderStatusChart" width="800" height="450"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box box-solid">
+                            <div class="box-body no-padding">
+                                <!-- Table of data -->
+                                <div class="mailbox-controls">
+                                    <div class="btn-group">
+                                        <a asp-route-pageSize="@Model.PageSize"
+                                           asp-route-currentPage="1" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                           aria-label="First" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                        <a asp-route-pageSize="@Model.PageSize"
+                                           asp-route-currentPage="@(Model.CurrentPage -1)" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                           aria-label="Previous" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                        @for (var i = 1; i <= Model.TotalPages; i++)
+                                        {
+                                            <a asp-route-pageSize="@Model.PageSize" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                               asp-route-currentPage="@(i)"
+                                               class="btn btn-default btn-sm @(i == Model.CurrentPage ? "active" : "")">@i</a>
+                                        }
+                                        <a asp-route-pageSize="@Model.PageSize" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                           asp-route-currentpage="@(Model.CurrentPage + 1)"
+                                           aria-label="Next" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                        <a asp-route-pageSize="@Model.PageSize" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                           asp-route-currentpage="@Model.TotalPages"
+                                           aria-label="Last" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="table-responsive mailbox-messages">
+                                    <table class="table">
+                                        <thead class="bg-primary">
+                                            <tr>
+                                                <th align="center">Order Status</th>
+                                                <th align="center">Prep Status</th>
+                                                <th align="center">Order Id</th>
+                                                <th align="center">Payment Status</th>
+                                                <th align="center">Payment Method</th>
+                                                <th>Order Date</th>
+                                                <th>Paid</th>
+                                                <th>Change</th>
+                                                <th>Order Discount</th>
+                                                <th>Sub Total</th>
+                                                <th>VAT Total</th>
+                                                <th>Grand Total</th>
+                                                <th>User</th>
+                                                <th>Store Name</th>
+                                                <th width="100">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.Orders)
+                                            {
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => item.OrderStatus)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.PreparationStatus)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.PaymentStatus)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.PaymentMethod)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                                                    <td>R @Html.DisplayFor(modelItem => item.Paid)</td>
+                                                    <td>R @Html.DisplayFor(modelItem => item.Change)</td>
+                                                    <td>R @Html.DisplayFor(modelItem => item.OrderDiscount)</td>
+                                                    <td>R @Html.DisplayFor(modelItem => item.OrderTotal)</td>
+                                                    <td>R @Html.DisplayFor(modelItem => item.VatTotal)</td>
+                                                    <td>R @Html.DisplayFor(modelItem => item.GrandTotal)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Username)</td>
+                                                    <td>@Model.AllStores.FirstOrDefault(s => s.Store_ID == item.StoreId).StoreName</td>
+                                                    <td><a asp-page="./OrderDetails" asp-route-id="@item.Id" class="btn btn-primary btn-xs text-right"><i class="far fa-eye"></i></a></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mailbox-controls">
+                                    <div class="btn-group">
+                                        <a asp-route-pageSize="@Model.PageSize" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                           asp-route-currentPage="1"
+                                           aria-label="First" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                        <a asp-route-pageSize="@Model.PageSize" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                           asp-route-currentPage="@(Model.CurrentPage -1)"
+                                           aria-label="Previous" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                        @for (var i = 1; i <= Model.TotalPages; i++)
+                                        {
+                                            <a asp-route-pageSize="@Model.PageSize" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                               asp-route-currentPage="@(i)"
+                                               class="btn btn-default btn-sm @(i == Model.CurrentPage ? "active" : "")">@i</a>
+                                        }
+                                        <a asp-route-pageSize="@Model.PageSize" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                           asp-route-currentpage="@(Model.CurrentPage + 1)"
+                                           aria-label="Next" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                        <a asp-route-pageSize="@Model.PageSize" asp-route-month="@Model.SelectedMonth" asp-route-year="@Model.SelectedYear"
+                                           asp-route-currentpage="@Model.TotalPages"
+                                           aria-label="Last" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+<script>
+        function DoPostBack() {
+                        document.pageSizeForm.action = "/Reports/SalesReport";
+                        document.pageSizeForm.submit();
+                    }
+</script>
