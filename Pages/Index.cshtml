@@ -1,0 +1,280 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@section Scripts {
+    <script type="text/javascript">
+        var chart = null;
+        var chart2 = null;
+        var cats = null;
+        var data = null;
+        function createChart() {
+            $('#loading').show();
+            $('#topCounts').load('/Index?handler=TopCountsView');
+            $('#latestOrders').load('/Index?handler=LatestOrdersView');
+            $('#lowStockList').load('/Index?handler=LowStockView');
+            $('#orderTotals').load('/Index?handler=OrderTotalsView');
+            $('#bestsellers').load('/Index?handler=BestsellersView');
+            $('#feedbacks').load('/Index?handler=FeedbacksView');
+            $.getJSON('/Index?handler=OrdersBarChartView', function (indata) {
+                cats = indata[0];
+                data = indata[1];
+                chart = new Highcharts.chart('container', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    xAxis: {
+                        categories: cats,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        tickInterval: 10,
+                        lineWidth: 1,
+                        allowDecimals: false,
+                        title: {
+                            text: 'Order Amounts'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#DCEFFC',
+                        borderColor: '#5F6670',
+                        headerFormat: '<span style="font-size:18px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:#1779ba;padding:5px;background-color:#DCEFFC;">{series.name}: </td>' +
+                            '<td style="color:#1779ba;padding:5px;background-color:#DCEFFC;"><b>{point.y}</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        },
+                        series: {
+                            dataLabels: {
+                                inside: true,
+                                enabled: true,
+                                color: '#5F6670',
+                                useHTML: true,
+                                style: {
+                                    fontSize: '15px'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Orders',
+                        data: data
+                    }]
+                });
+            });
+            $.getJSON('/Index?handler=FeedbackBarChartView', function (indata) {
+                cats = indata[0];
+                data = indata[1];
+                chart2 = new Highcharts.chart('containerFeedback', {
+                    chart: {
+                        type: 'column'
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: cats,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        tickInterval: 10,
+                        lineWidth: 1,
+                        allowDecimals: false,
+                        title: {
+                            text: 'No of Feedbacks'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#DCEFFC',
+                        borderColor: '#5F6670',
+                        headerFormat: '<span style="font-size:18px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:#1779ba;padding:5px;background-color:#DCEFFC;">{series.name}: </td>' +
+                            '<td style="color:#1779ba;padding:5px;background-color:#DCEFFC;"><b>{point.y}</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            borderColor: '#5F6670',
+                            color: '#DCEFFC',
+                            borderRadius: 5,
+                            pointPadding: 0,
+                            borderWidth: 2,
+                            dataLabels: {
+                                inside: true,
+                                enabled: true,
+                                color: '#5F6670',
+                                useHTML: true,
+                                style: {
+                                    fontSize: '15px'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Total Feedbacks',
+                        data: data
+                    }]
+                });
+            });
+            $.getJSON('/Index?handler=UserReadWhatsNew', function (data) {
+                if (data.hasread === "Yes") {
+                    $('#newFeatures').modal('hide');
+                }
+                else {
+                    $('#newFeatures').modal('show');
+                }
+            });
+            $('#loading').hide();
+        }
+
+        $(function () {
+            createChart(cats, data);
+            setInterval(function () {
+                chart.destroy();
+                chart2.destroy();
+                chart = null;
+                chart2 = null;
+                cats = null;
+                data = null;
+                createChart();
+            }, 15000);
+        });
+    </script>
+}
+<form method="post" asp-page="/index">
+    <section class="content-header">
+        <h1>
+            Dashboard
+            <small>@Model.Metrics Data</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        </ol>
+    </section>
+    <input type="hidden" asp-for="Metrics" />
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="btn-group pull-right" role="group">
+                    <button type="submit" class="btn btn-primary" asp-route-metrics="Daily" asp-page-handler="MetricsChange">Daily</button>
+                    <button type="submit" class="btn btn-primary" asp-route-metrics="Weekly" asp-page-handler="MetricsChange">Weekly</button>
+                    <button type="submit" class="btn btn-primary" asp-route-metrics="Monthly" asp-page-handler="MetricsChange">Monthly</button>
+                    <button type="submit" class="btn btn-primary" asp-route-metrics="Overall" asp-page-handler="MetricsChange">Overall</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <!-- Top Counts -->
+            <div id="topCounts"></div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <!-- Bar Chart: Orders -->
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Orders</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="container" style="width:100%; height:300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <!-- TABLE: LATEST ORDERS -->
+                <div id="latestOrders"></div>
+            </div>
+            <div class="col-md-4">
+                <!-- Low Stock List -->
+                <div id="lowStockList"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <!-- TABLE: Order Totals -->
+                <div id="orderTotals"></div>
+            </div>
+            <div class="col-md-4">
+                <!-- Bestsellers -->
+                <div id="bestsellers"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Feedbacks for @Model.Metrics</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="containerFeedback" style="width:100%; height:300px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="feedbacks"></div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="newFeatures" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">What's New</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            @foreach (var feature in Model.ChangeLog)
+                            {
+                                <li class="list-group-item">
+                                    <h5 class="list-group-item-heading">@feature.ChangeName</h5>
+                                    <p class="list-group-item-text">@feature.Description</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" asp-page-handler="HasRead" class="btn btn-success">Dismiss</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>

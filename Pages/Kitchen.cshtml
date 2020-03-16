@@ -1,0 +1,38 @@
+﻿@page
+@model JRPC_HMS.Pages.KitchenModel
+@{
+    ViewData["Title"] = "Kitchen";
+}
+
+<section class="content-header">
+    <h1>
+        Kitchen
+        <small>@Model.Orders.Count</small>
+    </h1>    
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Kitchen</li>
+    </ol>
+</section>
+
+<section class="content">
+    <form method="post">
+        <div class="container-fluid">            
+            <div id="parialview"></div>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <script>
+        function getData() {
+            $('#loading').show().fadeIn();
+            $('#parialview').load('/Kitchen?handler=OrdersWithItems', null, function () {
+                $('#loading').hide().fadeOut();
+            });
+        }
+        $(function () {
+            setInterval(getData, 5000);            
+        });
+    </script>
+}

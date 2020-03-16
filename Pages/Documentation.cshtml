@@ -1,0 +1,99 @@
+﻿@page
+@model JRPC_HMS.Pages.DocumentationModel
+@{
+    ViewData["Title"] = "Documentation";
+}
+
+<style>
+    .tabs-left > .nav-tabs {
+        border-bottom: 0;
+    }
+
+    .tab-content > .tab-pane,
+    .pill-content > .pill-pane {
+        display: none;
+    }
+
+    .tab-content > .active,
+    .pill-content > .active {
+        display: block;        
+    }
+        
+    .tabs-left > .nav-tabs > li {
+        float: none;
+    }
+
+        .tabs-left > .nav-tabs > li > a {
+            min-width: 100px;
+            margin-right: 0;
+            margin-bottom: 3px;
+        }
+
+    .tabs-left > .nav-tabs {
+        float: left;
+        margin-right: 19px;
+        border-right: 1px solid #ddd;
+    }
+
+        .tabs-left > .nav-tabs > li > a {
+            margin-right: -1px;
+            -webkit-border-radius: 4px 0 0 4px;
+            -moz-border-radius: 4px 0 0 4px;
+            border-radius: 4px 0 0 4px;
+        }
+
+            .tabs-left > .nav-tabs > li > a:hover,
+            .tabs-left > .nav-tabs > li > a:focus {
+                border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+                background-color: #337AB7;
+                color: #FFFFFF;
+            }
+
+        .tabs-left > .nav-tabs .active > a,
+        .tabs-left > .nav-tabs .active > a:hover,
+        .tabs-left > .nav-tabs .active > a:focus {
+            border-color: #ddd transparent #ddd #ddd;
+            *border-right-color: #ffffff;
+            background-color: #337AB7;
+            color: #FFFFFF;
+        }
+</style>
+
+<section class="content-header">
+    <h1>
+        Documentation
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Documentation</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-body no-padding">
+                    <div class="tabbable tabs-left">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#a" data-toggle="tab">Tutorial 1</a></li>
+                            <li><a href="#b" data-toggle="tab">Tutorial 2</a></li>
+                            <li><a href="#c" data-toggle="tab">Tutorial 3</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="a">
+                                Tutorial 1
+                            </div>
+                            <div class="tab-pane" id="b">
+                                Tutorial 2
+                            </div>
+                            <div class="tab-pane" id="c">
+                                Tutorial 3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

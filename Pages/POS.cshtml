@@ -1,0 +1,181 @@
+﻿@page
+@model JRPC_HMS.Pages.POSModel
+@{
+    ViewData["Title"] = "POS";
+}
+
+<style>
+    .navi, .cat, .prod {
+        display: table-cell;
+        float: none;
+        vertical-align: top;
+    }
+
+    .wrapper {
+        display: table;
+        width: 100%;
+    }
+
+    .rowy {
+        height: 90%;
+        display: table-row;
+    }
+        /*.rowy:before, .rowy:after {
+            content: none;
+        }*/
+
+    .navi {
+        padding-left: 0;
+        padding-right: 0;
+        width: 450px;
+        color: #FFFFFF;
+    }
+
+    .cat {
+        width: 200px;
+        color: #FFFFFF;
+        background: #1779ba;
+    }
+
+    .prod {
+        color: #FFFFFF;
+        background: #1779ba;
+    }
+
+    .btn-group.special {
+        display: flex;
+    }
+
+    .special .btn {
+        flex: 1
+    }
+</style>
+
+<div class="hidden-xs hidden-sm">
+    <div class="wrapper">
+        <div class="rowy">
+            <div class="navi">
+                <div style="width:100%;">
+                    <div style="width:100%;height:50px;border-bottom:1px solid white;padding:8px;">
+                        <table style="width:100%;">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="input-group input-group">
+                                            <span class="input-group-addon">Order #</span>
+                                            <select class="form-control" asp-for="SelectedOrder_Id" asp-items="Model.OutsOrders">
+                                                <option value="">Select Order</option>
+                                            </select>
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-primary btn-block">GO</button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="width:100%;height: calc(85vh - 50px - 180px);overflow:auto;border-top:1px solid white;">
+                        <table class="table">
+                            <thead style="background-color:#1779ba;color:white;">
+                                <tr>
+                                    <th scope="col" width="10%">Qty</th>
+                                    <th scope="col">Item</th>
+                                    <th scope="col" width="25%">Price</th>
+                                    <th scope="col" width="5%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var oItem in Model.OrderItemss)
+                                {
+                                    decimal prodTotPrice = @Model.AllProducts.FirstOrDefault(x => x.Product_ID == oItem.Product_ID).SellingPrice * @oItem.Quantity;
+                                    <tr>
+                                        <td>@oItem.Quantity</td>
+                                        <td>@Model.AllProducts.FirstOrDefault(x => x.Product_ID == oItem.Product_ID).ProductName</td>
+                                        <td>R @prodTotPrice</td>
+                                        <td><a asp-route-orderid="@Model.CurrentOrder.OrderId" asp-route-id="@oItem.Id" asp-route-prodId="@oItem.Product_ID" asp-page-handler="MinusQuantity"><i class="fas fa-minus-square"></i></a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="width:100%;height:180px;">
+                        <table class="table">
+                            <tr>
+                                <td>SubTotal</td>
+                                <td width="25%">R @Model.CurrentOrder.OrderTotal</td>
+                            </tr>
+                            <tr>
+                                <td>VAT 15%</td>
+                                <td width="25%">R @Model.CurrentOrder.VatTotal</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td width="25%">R @Model.CurrentOrder.GrandTotal</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center">
+                                    <div class="btn-group btn-group-lg special" role="group" aria-expanded="true">
+                                        <a class="btn btn-success" asp-page="./CheckoutPayment" asp-route-id="@Model.CurrentOrder.OrderId">Checkout</a>
+                                        <a class="btn btn-danger" asp-route-orderid="@Model.CurrentOrder.OrderId" asp-page-handler="VoidOrder">Void</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="cat" style="border-left:1px solid white;">
+                <div style="width:100%;">
+                    <div style="width:100%;height:50px;border-bottom:1px solid white;padding:8px;">
+                        <h4 class="text-center" style="color:#ffffff;">Categories</h4>
+                    </div>
+                    <div style="width:100%;height: calc(85vh - 50px);overflow:auto;border-top:1px solid white;">
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <a class="btn btn-success btn-block" asp-page-handler="Categories" asp-route-catId="@cat.Cat_ID" asp-route-orderid="@Model.CurrentOrder.OrderId">@cat.CategoryName</a>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="prod" style="border-left:1px solid white;">
+                <div style="width:100%;">
+                    <div style="width:100%;height:50px;border-bottom:1px solid white;padding:8px;">
+                        <h4 class="text-center" style="color:#ffffff;">Products</h4>
+                    </div>
+                    <div style="width:100%;height: calc(85vh - 50px);overflow:auto;border-top:1px solid white;color:white;">
+                        <div class="container-fluid">
+                            <div class="row">
+                                @foreach (var product in Model.Products)
+                                {
+                                    <div class="col-lg-3">
+                                        <a asp-page-handler="Order" asp-route-prodId="@product.Product_ID" asp-route-orderid="@Model.CurrentOrder.OrderId">
+                                            <div class="panel panel-default">
+                                                <img src="@product.ImageUrl" class="img-responsive">
+                                                <div class="panel-footer">
+                                                    <p class="title"><span style="float:left;">@product.ProductName</span></p>
+                                                    <p><span style="float:right;">R @product.SellingPrice</span></p>
+                                                    <p>&nbsp;</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="hidden-lg hidden-md">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h3 class="text-center">Please switch to bigger screen to view this page.</h3>
+            </div>
+        </div>
+    </div>
+</div>

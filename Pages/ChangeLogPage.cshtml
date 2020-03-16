@@ -1,0 +1,227 @@
+﻿@page
+@model JRPC_HMS.ChangeLogPageModel
+@{
+    ViewData["Title"] = "ChangeLogPage";
+}
+
+<section class="content-header">
+    <h1>
+        New Features
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Settings</li>
+        <li class="active">New Features</li>
+    </ol>
+</section>
+
+<section class="content">
+    <form method="post" name="pageSizeForm" asp-page="./NewFeaturesPage">
+        <div class="box box-primary">
+            <div class="box-body no-padding">
+                <div class="mailbox-controls">
+                    <div class="mailbox-controls">
+                        <button type="button" class="btn btn-success btn-sm" title="Create" onclick="AddNew();">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <a asp-page="/NewFeaturesPage" class="btn btn-success btn-sm"><i class="fas fa-sync-alt"></i></a>
+                        <div class="pull-right">
+                            <label asp-for="PageSize">Displaying</label>
+                            <select asp-for="PageSize" asp-items="Model.PageSizeList" class="pagesizeddl" onchange="DoPostBack();"></select>
+                            &nbsp;&nbsp;&nbsp;
+                            <div class="btn-group">
+                                <a asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentPage="1"
+                                   aria-label="First" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                    <i class="fas fa-angle-double-left"></i>
+                                </a>
+                                <a asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentPage="@(Model.CurrentPage -1)"
+                                   aria-label="Previous" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                    <i class="fas fa-angle-left"></i>
+                                </a>
+                                @for (var i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <a asp-route-pageSize="@Model.PageSize"
+                                       asp-route-currentPage="@(i)"
+                                       class="btn btn-default btn-sm @(i == Model.CurrentPage ? "active" : "")">@i</a>
+                                }
+                                <a asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentpage="@(Model.CurrentPage + 1)"
+                                   aria-label="Next" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                    <i class="fas fa-angle-right"></i>
+                                </a>
+                                <a asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentpage="@Model.TotalPages"
+                                   aria-label="Last" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                    <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive mailbox-messages">
+                    <div class="container-fluid">
+                        <div class="row">
+                            @foreach (var item in Model.ChangeLog)
+                            {
+                                <div class="col-xs-2_2">
+                                    <div class="box">
+                                        <div class="box-header">
+                                            <h4 class="box-title">@item.ChangeName</h4>
+                                            <div class="pull-right">
+                                                <button type="button" class="btn btn-primary openModal" data-nfid="@item.Id" data-name="@item.ChangeName" data-desc="@item.Description" data-comp="@item.PercentageCompleted"><i class="far fa-edit"></i></button>
+                                                <button type="submit" class="btn btn-danger" asp-page-handler="DeleteFeature" asp-route-currentpage="@Model.TotalPages"
+                                                        asp-route-pageSize="@Model.PageSize" asp-route-id="@item.Id">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <p>@item.Description</p>
+                                        </div>
+                                        <div class="box-footer">
+                                            <span class="pull-left">@item.DateAdded.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                                            <span class="pull-right">@item.PercentageCompleted %</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer no-padding">
+                <div class="mailbox-controls">
+                    <button type="button" class="btn btn-success btn-sm" title="Create" onclick="AddNew()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <a asp-page="/NewFeaturePage" class="btn btn-success btn-sm"><i class="fas fa-sync-alt"></i></a>
+                    <div class="pull-right">
+                        <label asp-for="PageSize">Displaying</label>
+                        <select asp-for="PageSize" asp-items="Model.PageSizeList" class="pagesizeddl" onchange="DoPostBack();"></select>
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="btn-group">
+                            <a asp-route-pageSize="@Model.PageSize"
+                               asp-route-currentPage="1"
+                               aria-label="First" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                            <a asp-route-pageSize="@Model.PageSize"
+                               asp-route-currentPage="@(Model.CurrentPage -1)"
+                               aria-label="Previous" class="btn btn-primary btn-sm @(Model.EnablePrevious ? " " : " disabled" )">
+                                <i class="fas fa-angle-left"></i>
+                            </a>
+                            @for (var i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <a asp-route-pageSize="@Model.PageSize"
+                                   asp-route-currentPage="@(i)"
+                                   class="btn btn-default btn-sm @(i == Model.CurrentPage ? "active" : "")">@i</a>
+                            }
+                            <a asp-route-pageSize="@Model.PageSize"
+                               asp-route-currentpage="@(Model.CurrentPage + 1)"
+                               aria-label="Next" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                            <a asp-route-pageSize="@Model.PageSize"
+                               asp-route-currentpage="@Model.TotalPages"
+                               aria-label="Last" class="btn btn-primary btn-sm @(Model.EnableNext ? " " : " disabled" )">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="newFeatures" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Add New Feature</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr>
+                                <th>Feature Name</th>
+                                <td><input type="text" asp-for="ChangeName" class="form-control" /></td>
+                            </tr>
+                            <tr>
+                                <th>Feature Description</th>
+                                <td><textarea style="resize:none;" rows="5" class="form-control" asp-for="ChangeDescription"></textarea></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success"
+                                asp-route-currentpage="@Model.TotalPages" asp-route-pageSize="@Model.PageSize">
+                            <i class="far fa-save"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="updateFeatures" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Update New Feature</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" asp-for="UpdateFeatureId" id="fId" />
+                        <table class="table">
+                            <tr>
+                                <th>Feature Name</th>
+                                <td><input type="text" asp-for="UpdateChangeName" class="form-control" id="fName" /></td>
+                            </tr>
+                            <tr>
+                                <th>Feature Description</th>
+                                <td><textarea style="resize:none;" rows="5" class="form-control" asp-for="UpdateChangeDescription" id="fDesc"></textarea></td>
+                            </tr>
+                            <tr>
+                                <th>Feature Completion</th>
+                                <td><input type="number" asp-for="UpdateChangeCompletion" class="form-control" id="fComp" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" asp-page-handler="UpdateFeature"
+                                asp-route-currentpage="@Model.TotalPages" asp-route-pageSize="@Model.PageSize" class="btn btn-success">
+                            <i class="far fa-save"></i> Save
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <script>
+        function DoPostBack() {
+            document.pageSizeForm.action = "/NewFeaturesPage";
+            document.pageSizeForm.submit();
+        }
+        function AddNew() {
+            $('#newFeatures').modal('show');
+        }
+
+        $(function () {
+            $('.openModal').on('click', function () {
+                $('#updateFeatures').modal('show');
+                var nfid = $(this).data('nfid')
+                var name = $(this).data('name')
+                var desc = $(this).data('desc')
+                var comp = $(this).data('comp')
+                $('#fId').val(nfid);
+                $('#fName').val(name);
+                $('#fDesc').val(desc);
+                $('#fComp').val(comp);
+            });
+        });
+
+    </script>
+}

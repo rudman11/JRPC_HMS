@@ -1,0 +1,427 @@
+﻿@page
+@model JRPC_HMS.Pages.FBFormModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>QRServ</title>
+    <style>
+        body {
+            margin: 0 auto;
+            font-family: Arial;
+            background-color: #FFFFFF;
+        }
+
+        svg {
+            fill: rgb(0, 0, 0);
+            height: 3.6rem;
+            width: 3.6rem;
+            margin: 0.2rem;
+        }
+
+        input[type="radio"] {
+            opacity: 0;
+        }
+
+            input[type="radio"] + svg {
+                -webkit-transition: all 0.2s;
+                transition: all 0.2s;
+            }
+
+        input + svg {
+            cursor: pointer;
+        }
+
+        input[class="super-happy"]:hover + svg,
+        input[class="super-happy"]:checked + svg,
+        input[class="super-happy"]:focus + svg {
+            fill: rgb(0, 109, 217);
+        }
+
+        input[class="happy"]:hover + svg,
+        input[class="happy"]:checked + svg,
+        input[class="happy"]:focus + svg {
+            fill: rgb(0, 204, 79);
+        }
+
+        input[class="neutral"]:hover + svg,
+        input[class="neutral"]:checked + svg,
+        input[class="neutral"]:focus + svg {
+            fill: rgb(232, 214, 0);
+        }
+
+        input[class="sad"]:hover + svg,
+        input[class="sad"]:checked + svg,
+        input[class="sad"]:focus + svg {
+            fill: rgb(229, 132, 0);
+        }
+
+        input[class="super-sad"]:hover + svg,
+        input[class="super-sad"]:checked + svg,
+        input[class="super-sad"]:focus + svg {
+            fill: rgb(239, 42, 16);
+        }
+
+        .rowy::after {
+            content: "";
+            clear: both;
+            display: block;
+        }
+
+        [class*="coll-"] {
+            float: left;
+            font-weight: bold;
+        }
+        /* For desktop: */
+        .coll-1 {
+            width: 8.33%;
+        }
+
+        .coll-2 {
+            width: 16.66%;
+        }
+
+        .coll-3 {
+            width: 25%;
+        }
+
+        .coll-4 {
+            width: 33.33%;
+        }
+
+        .coll-5 {
+            width: 41.66%;
+        }
+
+        .coll-6 {
+            width: 50%;
+        }
+
+        .coll-7 {
+            width: 58.33%;
+        }
+
+        .coll-8 {
+            width: 66.66%;
+        }
+
+        .coll-9 {
+            width: 75%;
+        }
+
+        .coll-10 {
+            width: 83.33%;
+        }
+
+        .coll-11 {
+            width: 91.66%;
+        }
+
+        .coll-12 {
+            width: 100%;
+        }
+
+        .questions {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-family: cabin;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-weight: bolder;
+            background-color: #0000FF;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .button1 {
+            background-color: #0000FF;
+            color: #FFFFFF;
+            border: 2px solid #0000FF;
+            border-radius: 10px;
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            white-space: pre-wrap;
+            margin-right: 5px;
+            margin-left: 5px;
+            font-size: 26px;
+            text-decoration: none;
+            text-decoration-style: none;
+            font-weight: bolder;
+            font-variant: small-caps;
+            display: inline-block;
+        }
+
+            .button1:hover {
+                background-color: #FFFFFF;
+                color: #0000FF;
+                font-weight: bolder;
+            }
+
+        .button2 {
+            background-color: #FFFFFF;
+            color: #0000FF;
+            border: 2px solid #0000FF;
+            border-radius: 10px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            white-space: pre-wrap;
+            margin-right: 5px;
+            margin-left: 5px;
+            font-size: 26px;
+            text-decoration: none;
+            text-decoration-style: none;
+            font-weight: bold;
+            font-variant: small-caps;
+            text-align: center;
+            text-wrap: normal;
+        }
+
+            .button2:hover {
+                background-color: #FFFFFF;
+                color: #0000FF;
+                font-weight: bolder;
+            }
+
+        .header {
+            background-color: #FFFFFF;
+            color: #FFFFFF;
+            font-size: 30px;
+        }
+
+        .txtbox {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border: 1px solid #0000FF;
+            padding: 5px 2px 5px 2px;
+            color: #0000FF;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .store {
+            font-size: 26px;
+            font-weight: bolder;
+            font-variant: small-caps;
+            color: #0000FF;
+        }
+
+        .subtitlecss {
+            font-family: Arial;
+            color: #0000FF;
+            font-size: 20px;
+            text-align: justify;
+        }
+
+        .button {
+            background-color: #0000FF; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+            .button:hover {
+                background-color: #FFFFFF;
+                color: #0000FF;
+                font-weight: bolder;
+            }
+
+        .button-1 {
+            background-color: transparent;
+            border: 3px solid #0000FF;
+            border-radius: 50px;
+            -webkit-transition: all .15s ease-in-out;
+            transition: all .15s ease-in-out;
+            color: #0000FF;
+        }
+
+            .button-1:hover {
+                box-shadow: 0 0 10px 0 #0000FF inset, 0 0 20px 2px #0000FF;
+                border: 3px solid #0000FF;
+            }
+
+        .screensize {
+            width: 480px;
+            display: inline-block;
+        }
+
+        /* Smartphones (landscape) ----------- */
+        @@media only screen and (min-width : 321px) and (max-device-width : 500px) {
+            .screensize {
+                width: 100%;
+            }
+        }
+            </style>
+</head>
+<body>
+    <div class="centering">
+        <div class="screensize">
+            <div class="rowy">
+                <div class="coll-12" style="text-align:center;">
+                    <img src="~/img/logo.gif" style="width:60%;height:auto;" />
+                </div>
+            </div>
+            <div style="height:5px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+
+            @if (Model.FormSelected == "")
+            {
+
+                <div style="padding-bottom:5px;">
+                    <div class="rowy">
+                        <div class="coll-12" style="text-align:center">
+                            <span class="subtitlecss">Please select your form to review.</span>
+                        </div>
+                    </div>
+                    <div style="height:5px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                    <div class="rowy" style="padding-left:5px; padding-right:5px;">
+                        <div class="coll-12" style="text-align:center;padding-bottom:25px;padding-top:25px;">
+                            @foreach (var form in Model.Forms)
+                            {
+                                <form method="post" asp-page-handler="SelectedForm" asp-route-formname="@form.FormName">
+                                    <div class="rowy">
+                                        <div class="coll-12">
+                                            <button class="button1" style="width:98%;">@form.FormName</button>
+                                        </div>
+                                    </div>
+                                    <div style="height:5px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <form method="post" enctype="multipart/form-data" asp-route-id="@Model.TheForm.Form_ID">
+                    <div style="padding-bottom:5px;">
+                        <div class="rowy">
+                            <div class="coll-12" style="text-align:center">
+                                <span class="store">@Model.TheForm.FormName</span>
+                            </div>
+                            <div class="coll-12" style="text-align:center">
+                                <span class="subtitlecss">Tell Us How We Are Doing?</span>
+                            </div>
+                        </div>
+                        <div style="height:5px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                        <div class="rowy" style="padding-left:5px; padding-right:5px;">
+                            <div class="coll-6">
+                                <span asp-validation-for="Name" style="color:red;font-size:8px;"></span>
+                                <input type="text" placeholder="Name" class="txtbox" style="width:98%;" asp-for="Name" />
+                            </div>
+                            <div class="coll-6">
+                                <span asp-validation-for="Email" style="color:red;font-size:8px;"></span>
+                                <input type="email" placeholder="Email" class="txtbox" style="width:98%;" asp-for="Email" />
+                            </div>
+                        </div>
+                        <div class="rowy" style="padding-left:5px; padding-right:5px;">
+                            <div class="coll-6">
+                                <input type="tel" placeholder="Phone" class="txtbox" style="width:98%;" asp-for="Phone" />
+                            </div>
+                            <div class="coll-6">
+                                <input type="text" placeholder="Waitron" class="txtbox" style="width:98%;" asp-for="Waitron" />
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height:15px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                    <div class="rowy" style="padding-left:5px; padding-right:5px;">
+                        <div class="coll-7" style="font-size:16px;">
+                            May we contacted you for follow up?
+                        </div>
+                        <div class="coll-5" style="text-align:right;">
+                            <div class="contactedStyle">
+                                <input type="radio" id="yesContacted" name="ContactedString" value="Yes" /><label for="yesContacted">Yes</label>
+                                <input type="radio" id="noContacted" name="ContactedString" value="No" /><label for="noContacted">No</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height:5px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                    <div style="height:5px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                    <div class="rowy">
+                        <div class="coll-12">
+                            @foreach (var question in Model.Questions)
+                            {
+                                <div class="rowy">
+                                    <div class="coll-12 questions" style="padding-top:2px;">
+                                        @question.QuestionName
+                                    </div>
+                                    <div class="coll-1">&nbsp;</div>
+                                    <div class="coll-2">
+                                        <label for="q@(question.Question_ID)SuperSad">
+                                            <input type="radio" name="q@(question.Question_ID)" class="super-sad" id="q@(question.Question_ID)SuperSad" value="20" />
+                                            <svg viewBox="0 0 24 24"><path d="M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M16.18,7.76L15.12,8.82L14.06,7.76L13,8.82L14.06,9.88L13,10.94L14.06,12L15.12,10.94L16.18,12L17.24,10.94L16.18,9.88L17.24,8.82L16.18,7.76M7.82,12L8.88,10.94L9.94,12L11,10.94L9.94,9.88L11,8.82L9.94,7.76L8.88,8.82L7.82,7.76L6.76,8.82L7.82,9.88L6.76,10.94L7.82,12M12,14C9.67,14 7.69,15.46 6.89,17.5H17.11C16.31,15.46 14.33,14 12,14Z" /></svg>
+                                        </label>
+                                    </div>
+                                    <div class="coll-2">
+                                        <label for="q@(question.Question_ID)Sad">
+                                            <input type="radio" name="q@(question.Question_ID)" class="sad" id="q@(question.Question_ID)Sad" value="40" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100%" height="100%" viewBox="0 0 24 24"><path d="M20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M15.5,8C16.3,8 17,8.7 17,9.5C17,10.3 16.3,11 15.5,11C14.7,11 14,10.3 14,9.5C14,8.7 14.7,8 15.5,8M10,9.5C10,10.3 9.3,11 8.5,11C7.7,11 7,10.3 7,9.5C7,8.7 7.7,8 8.5,8C9.3,8 10,8.7 10,9.5M12,14C13.75,14 15.29,14.72 16.19,15.81L14.77,17.23C14.32,16.5 13.25,16 12,16C10.75,16 9.68,16.5 9.23,17.23L7.81,15.81C8.71,14.72 10.25,14 12,14Z" /></svg>
+                                        </label>
+                                    </div>
+                                    <div class="coll-2">
+                                        <label for="q@(question.Question_ID)Neutral">
+                                            <input type="radio" name="q@(question.Question_ID)" class="neutral" id="q@(question.Question_ID)Neutral" value="60" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100%" height="100%" viewBox="0 0 24 24"><path d="M8.5,11A1.5,1.5 0 0,1 7,9.5A1.5,1.5 0 0,1 8.5,8A1.5,1.5 0 0,1 10,9.5A1.5,1.5 0 0,1 8.5,11M15.5,11A1.5,1.5 0 0,1 14,9.5A1.5,1.5 0 0,1 15.5,8A1.5,1.5 0 0,1 17,9.5A1.5,1.5 0 0,1 15.5,11M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M9,14H15A1,1 0 0,1 16,15A1,1 0 0,1 15,16H9A1,1 0 0,1 8,15A1,1 0 0,1 9,14Z" /></svg>
+                                        </label>
+                                    </div>
+                                    <div class="coll-2">
+                                        <label for="q@(question.Question_ID)Happy">
+                                            <input type="radio" name="q@(question.Question_ID)" class="happy" id="q@(question.Question_ID)Happy" value="80" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100%" height="100%" viewBox="0 0 24 24"><path d="M20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M10,9.5C10,10.3 9.3,11 8.5,11C7.7,11 7,10.3 7,9.5C7,8.7 7.7,8 8.5,8C9.3,8 10,8.7 10,9.5M17,9.5C17,10.3 16.3,11 15.5,11C14.7,11 14,10.3 14,9.5C14,8.7 14.7,8 15.5,8C16.3,8 17,8.7 17,9.5M12,17.23C10.25,17.23 8.71,16.5 7.81,15.42L9.23,14C9.68,14.72 10.75,15.23 12,15.23C13.25,15.23 14.32,14.72 14.77,14L16.19,15.42C15.29,16.5 13.75,17.23 12,17.23Z" /></svg>
+                                        </label>
+                                    </div>
+                                    <div class="coll-2">
+                                        <label for="q@(question.Question_ID)SuperHappy">
+                                            <input type="radio" name="q@(question.Question_ID)" class="super-happy" id="q@(question.Question_ID)SuperHappy" value="100" />
+                                            <svg viewBox="0 0 24 24"><path d="M12,17.5C14.33,17.5 16.3,16.04 17.11,14H6.89C7.69,16.04 9.67,17.5 12,17.5M8.5,11A1.5,1.5 0 0,0 10,9.5A1.5,1.5 0 0,0 8.5,8A1.5,1.5 0 0,0 7,9.5A1.5,1.5 0 0,0 8.5,11M15.5,11A1.5,1.5 0 0,0 17,9.5A1.5,1.5 0 0,0 15.5,8A1.5,1.5 0 0,0 14,9.5A1.5,1.5 0 0,0 15.5,11M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                                        </label>
+                                    </div>
+                                    <div class="coll-1">&nbsp;</div>
+                                </div>
+                                <div style="height:3px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                            }
+                        </div>
+                    </div>
+                    <div style="height:3px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                    <div class="rowy" style="padding-left:5px; padding-right:5px;">
+                        <div class="coll-12">
+                            <textarea class="txtbox" style="width:98%;font-family:Arial;resize:none;" rows="5" placeholder="Suggestions" asp-for="FormComments"></textarea>
+                        </div>
+                    </div>
+                    <div style="height:3px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                    <div class="rowy">
+                        <div class="coll-12" style="color:#0000FF;">
+                            Submit a photo
+                        </div>
+                    </div>
+                    <div style="height:10px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                    <div class="rowy">
+                        <div class="coll-12">
+                            <input type="file" asp-for="UploadImage" />
+                        </div>
+                    </div>
+                    <div style="height:10px;width:100%;background-color:#FFFFFF;">&nbsp;</div>
+                    <div class="rowy">
+                        <div class="coll-12" style="text-align:center;padding-bottom:25px;">
+                            <input type="submit" class="button1" style="width:98%;" />
+                        </div>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</body>
+</html>

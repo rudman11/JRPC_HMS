@@ -1,0 +1,150 @@
+﻿@page "{id:int?}"
+@model JRPC_HMS.Pages.CheckoutPaymentModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Checkout
+        <small>Payment</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="~/POS">POS</a></li>
+        <li class="active">Checkout</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="callout">
+                <div class="row">
+                    <div class="col">
+                        <div class="btn-group">
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="1" asp-route-id="@Model.Order.OrderId">R 1</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="2" asp-route-id="@Model.Order.OrderId">R 2</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="3" asp-route-id="@Model.Order.OrderId">R 3</a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="4" asp-route-id="@Model.Order.OrderId">R 4</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="5" asp-route-id="@Model.Order.OrderId">R 5</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="6" asp-route-id="@Model.Order.OrderId">R 6</a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="7" asp-route-id="@Model.Order.OrderId">R 7</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="8" asp-route-id="@Model.Order.OrderId">R 8</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="9" asp-route-id="@Model.Order.OrderId">R 9</a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group">
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="10" asp-route-id="@Model.Order.OrderId">R 10</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="20" asp-route-id="@Model.Order.OrderId">R 20</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="50" asp-route-id="@Model.Order.OrderId">R 50</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="100" asp-route-id="@Model.Order.OrderId">R 100</a>
+                            <a class="btn btn-default" asp-page-handler="AddPaidChange" asp-route-pay="200" asp-route-id="@Model.Order.OrderId">R 200</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="round callout">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Payment Method</h3><br />
+                        <div class="form-group">
+                            @foreach (var pm in Model.PaymentMethods)
+                            {
+                                <form method="get" asp-page-handler="AddPaidChange">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="PaymentMethod" id="PaymentMethod" value="@pm">
+                                            @pm
+                                        </label>
+                                    </div>
+                                </form>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Paid</td>
+                                        <td>R @Model.Order.Paid</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Change</td>
+                                        <td>R @Model.Order.Change</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="round callout">
+                <div class="row">
+                    <div class="col">
+                        <div class="callout">
+                            Order # @Model.Order.OrderId
+                        </div>
+                    </div>
+                    <div class="col">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="50">Qty</th>
+                                    <th width="250">Item</th>
+                                    <th width="100">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var oItem in Model.OrderItemss)
+                                {
+                                    decimal prodTotPrice = @Model.AllProducts.FirstOrDefault(x => x.Product_ID == oItem.Product_ID).SellingPrice * @oItem.Quantity;
+                                    <tr>
+                                        <td>@oItem.Quantity</td>
+                                        <td>@Model.AllProducts.FirstOrDefault(x => x.Product_ID == oItem.Product_ID).ProductName</td>
+                                        <td>R @prodTotPrice</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col">
+                        <div class="callout">
+                            <table border="0">
+                                <tbody>
+                                    <tr>
+                                        <td>SubTotal</td>
+                                        <td class="text-right">R @Model.Order.OrderTotal</td>
+                                    </tr>
+                                    <tr>
+                                        <td>VAT 15%</td>
+                                        <td class="text-right">R @Model.Order.VatTotal</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total</td>
+                                        <td class="text-right">R @Model.Order.GrandTotal</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->

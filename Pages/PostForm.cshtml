@@ -1,0 +1,309 @@
+﻿@page
+@model JRPC_HMS.Pages.PostFormModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>QRServ - Thank You</title>
+    <style>
+        body {
+            margin: 0 auto;
+            font-family: Arial;
+            background-color: #FFFFFF;
+        }
+
+        svg {
+            fill: rgb(0, 0, 0);
+            height: 3.6rem;
+            width: 3.6rem;
+            margin: 0.2rem;
+        }
+
+        input[type="radio"] {
+            opacity: 0;
+        }
+
+            input[type="radio"] + svg {
+                -webkit-transition: all 0.2s;
+                transition: all 0.2s;
+            }
+
+        input + svg {
+            cursor: pointer;
+        }
+
+        input[class="super-happy"]:hover + svg,
+        input[class="super-happy"]:checked + svg,
+        input[class="super-happy"]:focus + svg {
+            fill: rgb(0, 109, 217);
+        }
+
+        input[class="happy"]:hover + svg,
+        input[class="happy"]:checked + svg,
+        input[class="happy"]:focus + svg {
+            fill: rgb(0, 204, 79);
+        }
+
+        input[class="neutral"]:hover + svg,
+        input[class="neutral"]:checked + svg,
+        input[class="neutral"]:focus + svg {
+            fill: rgb(232, 214, 0);
+        }
+
+        input[class="sad"]:hover + svg,
+        input[class="sad"]:checked + svg,
+        input[class="sad"]:focus + svg {
+            fill: rgb(229, 132, 0);
+        }
+
+        input[class="super-sad"]:hover + svg,
+        input[class="super-sad"]:checked + svg,
+        input[class="super-sad"]:focus + svg {
+            fill: rgb(239, 42, 16);
+        }
+
+        .rowy::after {
+            content: "";
+            clear: both;
+            display: block;
+        }
+
+        [class*="coll-"] {
+            float: left;
+            font-weight: bold;
+        }
+        /* For desktop: */
+        .coll-1 {
+            width: 8.33%;
+        }
+
+        .coll-2 {
+            width: 16.66%;
+        }
+
+        .coll-3 {
+            width: 25%;
+        }
+
+        .coll-4 {
+            width: 33.33%;
+        }
+
+        .coll-5 {
+            width: 41.66%;
+        }
+
+        .coll-6 {
+            width: 50%;
+        }
+
+        .coll-7 {
+            width: 58.33%;
+        }
+
+        .coll-8 {
+            width: 66.66%;
+        }
+
+        .coll-9 {
+            width: 75%;
+        }
+
+        .coll-10 {
+            width: 83.33%;
+        }
+
+        .coll-11 {
+            width: 91.66%;
+        }
+
+        .coll-12 {
+            width: 100%;
+        }
+
+        .questions {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-family: cabin;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-weight: bolder;
+            background-color: #0000FF;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .button1 {
+            background-color: #0000FF;
+            color: #FFFFFF;
+            border: 2px solid #0000FF;
+            border-radius: 10px;
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            white-space: pre-wrap;
+            margin-right: 5px;
+            margin-left: 5px;
+            font-size: 26px;
+            text-decoration: none;
+            text-decoration-style: none;
+            font-weight: bolder;
+            font-variant: small-caps;
+            display: inline-block;
+        }
+
+            .button1:hover {
+                background-color: #FFFFFF;
+                color: #0000FF;
+                font-weight: bolder;
+            }
+
+        .button2 {
+            background-color: #FFFFFF;
+            color: #0000FF;
+            border: 2px solid #0000FF;
+            border-radius: 10px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            white-space: pre-wrap;
+            margin-right: 5px;
+            margin-left: 5px;
+            font-size: 26px;
+            text-decoration: none;
+            text-decoration-style: none;
+            font-weight: bold;
+            font-variant: small-caps;
+            text-align: center;
+            text-wrap: normal;
+        }
+
+            .button2:hover {
+                background-color: #FFFFFF;
+                color: #0000FF;
+                font-weight: bolder;
+            }
+
+        .header {
+            background-color: #FFFFFF;
+            color: #FFFFFF;
+            font-size: 30px;
+        }
+
+        .txtbox {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border: 1px solid #0000FF;
+            padding: 5px 2px 5px 2px;
+            color: #0000FF;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .store {
+            font-size: 26px;
+            font-weight: bolder;
+            font-variant: small-caps;
+            color: #0000FF;
+        }
+
+        .subtitlecss {
+            font-family: Arial;
+            color: #0000FF;
+            font-size: 20px;
+            text-align: justify;
+        }
+
+        .button {
+            background-color: #0000FF; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+            .button:hover {
+                background-color: #FFFFFF;
+                color: #0000FF;
+                font-weight: bolder;
+            }
+
+        .button-1 {
+            background-color: transparent;
+            border: 3px solid #0000FF;
+            border-radius: 50px;
+            -webkit-transition: all .15s ease-in-out;
+            transition: all .15s ease-in-out;
+            color: #0000FF;
+        }
+
+            .button-1:hover {
+                box-shadow: 0 0 10px 0 #0000FF inset, 0 0 20px 2px #0000FF;
+                border: 3px solid #0000FF;
+            }
+
+        .screensize {
+            width: 480px;
+            display: inline-block;
+        }
+
+        /* Smartphones (landscape) ----------- */
+        @@media only screen and (min-width : 321px) and (max-device-width : 500px) {
+            .screensize {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="centering">
+        <div class="screensize">
+            <div class="rowy">
+                <div class="coll-12" style="text-align:center;">
+                    <img src="~/img/logo.gif" style="width:60%;height:auto;" />
+                </div>
+            </div>
+            <div class="rowy" style="padding-left:10px;color:#5F6670;">
+                <p class="subtitlecss" style="text-align:center;font-size:25px;">@Model.Forms.FormName</p>
+            </div>
+            <div class="rowy" style="padding-left:10px;">
+                <div class="coll-12" style="color:#5F6670;">
+                    <p class="subtitlecss">Dear @Model.Customer.Name</p>
+                </div>
+            </div>
+            <div class="rowy"><div class="coll-12">&nbsp;</div></div>
+            <div class="rowy" style="padding-left:20px;padding-right:20px;">
+                <div class="coll-12" style="text-align:center;color:#5F6670;font-size: 3vw;">
+                    <p class="subtitlecss">@Model.Message1</p>
+                </div>
+            </div>
+            <div class="rowy" style="padding-left:20px;padding-right:20px;">
+                <div class="coll-12" style="text-align:center;color:#5F6670;font-size: 3vw;">
+                    <p class="subtitlecss">@Model.Message2</p>
+                </div>
+            </div>
+            <div class="rowy"><div class="coll-12">&nbsp;</div></div>
+            <div class="rowy" style="padding-left:10px;">
+                <div class="coll-12" style="color:#5F6670;">
+                    <p class="subtitlecss">JRPC Solutions</p>
+                </div>
+            </div>
+            <div style="text-align:right;padding-right:10px;font-size:10px;background-color:#0000FF;color:#FFFFFF;">
+                &copy; 2019 JRPC Solutions Pty (Ltd)
+            </div>
+        </div>
+    </div>
+</body>
+</html>
