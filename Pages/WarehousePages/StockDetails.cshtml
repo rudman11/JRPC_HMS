@@ -1,0 +1,72 @@
+﻿@page
+@model JRPC_HMS.Pages.WarehousePages.StockDetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<style>
+    .no-border {
+        background-color: #FFFFFF;
+        border: 0;
+        box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+    }
+</style>
+
+<section class="content-header">
+    <h1>
+        Stock Details
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Warehouse</li>
+        <li><a href="./StockIndex">Stock</a></li>
+        <li class="active">Details</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="text-right">
+        <a asp-page="./StockEdit" asp-route-id="@Model.Warehouse.Id" class="btn btn-success" title="Edit">
+            <i class="far fa-edit"></i>
+        </a>
+        <a asp-page="./StockIndex" class="btn btn-danger" title="Cancel">
+            <i class="fas fa-times"></i>
+        </a>
+    </div>
+    <br />
+    <!-- Default box -->
+    <div class="box box-primary">
+        <div class="box-body">
+            <table class="table">
+                <tr>
+                    <th>Stock Name</th>
+                    <td>@Model.Warehouse.StockName</td>
+                </tr>
+                <tr>
+                    <th>Unit</th>
+                    <td>@Model.Warehouse.Unit</td>
+                </tr>
+
+                <tr>
+                    <th>Price</th>
+                    <td>R @Model.Warehouse.Price</td>
+                </tr>
+                <tr>
+                    <th>In Stock</th>
+                    <td>@Model.Warehouse.InStock</td>
+                </tr>
+                <tr>
+                    <th>Supplier</th>
+                    <td>@Model.Supplier.Name</td>
+                </tr>
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

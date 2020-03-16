@@ -1,0 +1,176 @@
+﻿@page
+@model JRPC_HMS.TransfersModel
+@{
+    ViewData["Title"] = "Transfers";
+}
+
+<section class="content-header">
+    <h1>
+        Transfer Of Stock
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Warehouse</li>
+        <li><a href="./StockIndex">Stock</a></li>
+        <li class="active">Transfers</li>
+    </ol>
+</section>
+
+<section class="content">
+    <form method="post">
+        <div class="text-left">
+            <a asp-page="./StockIndex" class="btn btn-primary" title="Back">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>            
+        </div>
+        <br />
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Stock Details</h3>
+                            <input type="hidden" value="@Model.Warehouse.Id" />
+                        </div>
+                        <div class="box-body no-padding">
+                            <table class="table">
+                                <tr>
+                                    <th>Stock Name</th>
+                                    <td>@Model.Warehouse.StockName</td>
+                                </tr>
+                                <tr>
+                                    <th>Unit</th>
+                                    <td>@Model.Warehouse.Unit</td>
+                                </tr>
+                                <tr>
+                                    <th>Price</th>
+                                    <td>R @Model.Warehouse.Price</td>
+                                </tr>
+                                <tr>
+                                    <th>In Stock</th>
+                                    <td>@Model.Warehouse.InStock</td>
+                                </tr>
+                                <tr>
+                                    <th>Supplier</th>
+                                    <td>@Model.Supplier.Name</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Waiting Transfer Approvals</h3>
+                            </div>
+                            <div class="box-body no-padding">
+                                @if (Model.StockTransfers.Count() > 0)
+                                {
+                                    @foreach (var item in Model.StockTransfers)
+                                    {
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Requester</th>
+                                                    <td>
+                                                        @item.Requester
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Date Requested</th>
+                                                    <td>
+                                                        @item.TransferDate
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Amount To Transfer</th>
+                                                    <td>
+                                                        <input asp-for="AppAmountToTransfer" class="form-control" value="@item.Quantity" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>To Store</th>
+                                                    <td>
+                                                        <input asp-for="AppStoreId" class="form-control" value="@item.ToStoreId" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td>
+                                                        <button type="submit" asp-page-handler="Approvals" asp-route-itemId="@item.Id" class="btn btn-success">Approve</button>
+                                                        <button type="submit" asp-page-handler="Declines" asp-route-itemId="@item.Id" class="btn btn-danger">Decline</button>
+                                                    </td>
+                                                    <td>
+                                                        <div class="pull-right">
+                                                            @if (Model.AppMessage.Contains("Waiting") || Model.AppMessage.Contains("Declined"))
+                                                            {
+                                                                <span class="text-red"><i class="fa fa-circle-o text-red"></i> @Model.AppMessage</span>
+                                                            }
+                                                            else if (!string.IsNullOrEmpty(Model.AppMessage))
+                                                            {
+                                                                <span class="text-green"><i class="fa fa-circle-o text-green"></i> @Model.AppMessage</span>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    }
+                                }
+                                else
+                                {
+                                    <table class="table"><tr><td>No awaiting approvals</td></tr></table>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">New Transfer Details</h3>
+                            <div class="pull-right">
+                                @if (Model.Message.Contains("Waiting"))
+                                {
+                                    <span class="text-red"><i class="fa fa-circle-o text-red"></i> @Model.Message</span>
+                                }
+                                else if (!string.IsNullOrEmpty(Model.Message))
+                                {
+                                    <span class="text-green"><i class="fa fa-circle-o text-green"></i> @Model.Message</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="box-body no-padding">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th>Amount To Transfer</th>
+                                        <td>
+                                            <input asp-for="AmountToTransfer" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>To Store</th>
+                                        <td>
+                                            <select asp-for="StoreId" asp-items="@Model.Stores" class="form-control">
+                                                <option>Select Store</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <button type="submit" class="btn btn-success" title="Transfer">
+                                                <i class="fas fa-exchange-alt"></i> Transfer
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

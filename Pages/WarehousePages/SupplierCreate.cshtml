@@ -1,0 +1,80 @@
+﻿@page
+@model JRPC_HMS.Pages.WarehousePages.SupplierCreateModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<section class="content-header">
+    <h1>
+        Create Supplier
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li>Warehouse</li>
+        <li>Suppliers</li>
+        <li class="active">Create</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <form method="post" class="form-horizontal">
+        <div class="text-right">
+            <button type="submit" class="btn btn-success" title="Save">
+                <i class="far fa-save"></i>
+            </button>
+            <a asp-page="./SupplierIndex" class="btn btn-danger" title="Cancel">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        <br />
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label asp-for="Supplier.Name" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Supplier.Name" class="form-control" />
+                            <span asp-validation-for="Supplier.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Supplier.Email" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Supplier.Email" class="form-control" />
+                            <span asp-validation-for="Supplier.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Supplier.Phone" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Supplier.Phone" class="form-control" />
+                            <span asp-validation-for="Supplier.Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Supplier.Address" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Supplier.Address" class="form-control" />
+                            <span asp-validation-for="Supplier.Address" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Supplier.Contact" class="form-label col-sm-2"></label>
+                        <div class="col-sm-10">
+                            <input asp-for="Supplier.Contact" class="form-control" />
+                            <span asp-validation-for="Supplier.Contact" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </form>
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
